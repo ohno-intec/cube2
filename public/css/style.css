@@ -1,0 +1,59 @@
+@charset "utf-8";
+.i_tooltip {
+  color: red;
+}
+.tooltip-inner {
+  background-color: red;
+}
+.tooltip.top .tooltip-arrow {
+  border-top-color: red;
+}
+/* tooltip link *//* !!! change to bootstrap plugin !!!*/.my-tooltip {
+  /*
+ color:red;
+ font-family: FontAwesome;
+ content : "\f293";
+ */
+}
+/* main of tooltip */.tooltip {
+  /*
+ position:absolute;
+ z-index:9999;
+ display:block;
+ color:#fff;
+ font-size:14px;
+ line-height:1.2;
+ */
+}
+/* contents of tooltip */.tooltip__body {
+  /*
+ position:relative;
+ top:-15px;
+ padding:10px;
+ background:#222;
+ text-align:center;
+ -webkit-border-radius:3px;
+ -moz-border-radius:3px;
+ -ms-border-radius:3px;
+ border-radius:3px;
+ -webkit-box-shadow:0 2px 4px rgba(0, 0, 0, .4);
+ -moz-box-shadow:0 2px 4px rgba(0, 0, 0, .4);
+ -ms-box-shadow:0 2px 4px rgba(0, 0, 0, .4);
+ box-shadow:0 2px 4px rgba(0, 0, 0, .4);
+ */
+}
+/* Put allow like tooltip*/.tooltip__body:after {
+  /*
+ content:"";
+ position:absolute;
+ bottom:-5px;
+ left:50%;
+ display:block;
+ width:0;
+ height:0;
+ margin-left:-5px;
+ border-width:5px 5px 0 5px;
+ border-style:solid;
+ border-color:#222 transparent transparent transparent;
+ */
+}
