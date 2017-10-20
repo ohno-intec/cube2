@@ -142,7 +142,7 @@ class SuppliersController extends Controller
 
 			}
 
-			return redirect('master/supplier');
+			return redirect('masters/suppliers');
 
 		}else{	//拡張子がcsvじゃない場合
 
