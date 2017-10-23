@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 //https://readouble.com/laravel/5.4/ja/controllers.html
 
-require_once(public_path()."\php\\function.php");
+require_once(public_path()."/php/function.php");
 
 class BrandsController extends Controller
 {
