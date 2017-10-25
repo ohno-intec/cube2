@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+require_once(public_path().'/php/dbc.php');
+
 class ProductsController extends Controller
 {
     /**
@@ -135,7 +137,7 @@ class ProductsController extends Controller
 
             function getProductCode($brand_id){
 
-                $link = mysqli_connect("localhost", "root", "takuya" ,"cube2");
+                dbc();
                 //ブランドテーブルからブランドコードを取得
                 $sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
                 $result = mysqli_query($link, $sqlQuery);
