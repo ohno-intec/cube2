@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+requier_once('dbc.php');
+
 if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 	$product_id = $_POST['product_id'];
@@ -17,7 +19,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 	//$product_id = filter_input(INPUT_GET, 'product_id')
 	//json_decode($product_id);
 
-	$link = mysqli_connect("localhost", "root", "takuya", "cube2");
+	$link = DBC();
 	//DBから対象のデータを検索して変数に格納
 	$sqlQuery = "SELECT * FROM products WHERE id = $product_id";
 	$result = mysqli_query($link, $sqlQuery);

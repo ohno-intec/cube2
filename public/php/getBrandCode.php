@@ -6,17 +6,20 @@ use App\Category;
 use App\User;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;	//https://readouble.com/laravel/5.4/ja/facades.html
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+require_once('dbc.php');
 
 if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 	$brand_id = $_POST['brand_id'];
-	$link = mysqli_connect("localhost", "root", "takuya" ,"cube2");
+	$link = DBC();
 	//ブランドテーブルからブランドコードを取得
 	$sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
 	$result = mysqli_query($link, $sqlQuery);
+	#$result = DB::select("SELECT brand_code FROM brands WHERE id=$brand_id");
 	$brand_code = mysqli_fetch_assoc($result);
 	$brand_code = $brand_code['brand_code']; //get brand_code
 	//プロダクトテーブルからブランドコードを検索し、その中のプロダクトコードが最大値のものを取得
@@ -37,8 +40,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 
 function getBrandCode($brand_id){
-
-	$link = mysqli_connect("localhost", "root", "takuya" ,"cube2");
+	$link = DBC();
 	//ブランドテーブルからブランドコードを取得
 	$sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
 	$result = mysqli_query($link, $sqlQuery);
