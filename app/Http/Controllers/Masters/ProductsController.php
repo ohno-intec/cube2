@@ -333,7 +333,7 @@ class ProductsController extends Controller
                                                'product_costprice' => $line[9],
                                                'product_stockprice' => $line[10],
                                                'product_retailprice' => $line[11],
-                                               'product_newpricestartdate' => $line[12],
+                                               'product_newpricestartdate' => $line[12] == 0 ? null : $line[12],
                                                'product_newunitprice' => $line[13],
                                                'product_newcostprice' => $line[14],
                                                'product_newstockprice' => $line[15],
