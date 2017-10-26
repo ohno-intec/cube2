@@ -260,7 +260,11 @@ class ProductsController extends Controller
                 //対象のcategoriesレコードを取得
                 $category_code = $line[21]; //小分類
                 $category_record = DB::table('categories')->where('category_code', $category_code)->first();
-                $category_id = $category_record->id;
+                if(is_null($category_record)){
+                    $category_record = null;
+                }else{
+                    $category_id = $category_record->id;                    
+                }
 
                 //商品コード、商品名、索引を設定
                 //ひとまずbrand_idから新しいproduct_codeを取得
