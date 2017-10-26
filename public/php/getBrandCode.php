@@ -1,4 +1,5 @@
 <?php
+
 use App\Product;
 use App\Brand;
 use App\Supplier;
