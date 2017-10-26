@@ -285,7 +285,6 @@ class ProductsController extends Controller
 
                 //getProductCodeで取得した商品コードがすでに存在する場合は新たに商品コードを生成
                 if($bool === true){
-                    echo "存在します！<br>";
                     //配列内に存在していた場合、array_keysの戻り値のkeyの最大値を取得して$new_product_codeに加算
                     $new_product_code = $new_product_code + max(array_keys($product_code_array, $new_product_code)) + 1;
                 }else{
