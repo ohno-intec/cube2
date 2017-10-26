@@ -261,7 +261,7 @@ class ProductsController extends Controller
                 $category_code = $line[21]; //小分類
                 $category_record = DB::table('categories')->where('category_code', $category_code)->first();
                 if(is_null($category_record)){
-                    $category_record = null;
+                    $category_id = null;
                 }else{
                     $category_id = $category_record->id;                    
                 }
