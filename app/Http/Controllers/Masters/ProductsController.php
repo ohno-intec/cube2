@@ -308,7 +308,7 @@ class ProductsController extends Controller
                                         0 => $new_product_code,
                                         1 => $brand_id,
                                         4 => $product_name,
-                                        5 => $product_index,
+                                        //5 => $product_index,
                                         6 => $supplier_id,
                                         21 => $category_id
                                     );
