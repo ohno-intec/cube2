@@ -268,8 +268,6 @@ class ProductsController extends Controller
 
                 //商品コード、商品名、索引を設定
                 //ひとまずbrand_idから新しいproduct_codeを取得
-                echo public_path().'/php/dbc.php';
-
                 $new_product_code = getProductCode($brand_id);//現在商品コードの最大値プラス1
 
                 //CSV内に同ブランドが複数存在する場合の処理 9/26ここが処理できていいない
