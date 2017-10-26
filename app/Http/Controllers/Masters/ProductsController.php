@@ -251,7 +251,11 @@ class ProductsController extends Controller
                 //対象のsupplierレコードを取得
                 $supplier_code = $line[6];
                 $supplier_record = DB::table('suppliers')->where('supplier_code', $supplier_code)->first();
-                $supplier_id = $supplier_record->id;
+                if(is_null($supplier_record)){
+                    $supplier_id = null;
+                }else{
+                    $supplier_id = $supplier_record->id;
+                }
 
                 //対象のcategoriesレコードを取得
                 $category_code = $line[21]; //小分類
