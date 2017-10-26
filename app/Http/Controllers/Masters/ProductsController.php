@@ -137,7 +137,7 @@ class ProductsController extends Controller
 
             function getProductCode($brand_id){
 
-                dbc();
+                $link = dbc();
                 //ブランドテーブルからブランドコードを取得
                 $sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
                 $result = mysqli_query($link, $sqlQuery);
