@@ -36,7 +36,8 @@ class ProductsController extends Controller
     public function index()
     {
         //
-        $products = DB::table('products')->orderBy('created_at','desc')->paginate(20);
+        //$products = DB::table('products')->orderBy('created_at','desc')->paginate(20);
+        $products = DB::table('products')->orderBy('product_code','asc')->paginate(20);
         $suppliers = Supplier::all();
         $users = User::all();
         return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ]);
