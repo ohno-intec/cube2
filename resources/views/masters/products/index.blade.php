@@ -85,11 +85,13 @@
 			<tr>
 				<td>{{{ $product->product_code }}}</td>
 				<td>{{{ $product->product_name }}}</td>
+				<td>
 				@foreach($suppliers as $supplier)
 					@if($supplier->id == $product->supplier_id)
-						<td>{{{ $supplier->supplier_code.'('. $supplier->supplier_name.')' }}}</td>
+						{{{ $supplier->supplier_code.'('. $supplier->supplier_name.')' }}}
 					@endif
 				@endforeach
+				</td>
 				<td>{{{ $product->product_unitprice }}}</td>
 				<td>{{{ $product->product_costprice }}}</td>
 				<td>{{{ $product->product_stockprice }}}</td>
@@ -101,11 +103,13 @@
 				<td>{{{ $product->product_newretailprice }}}</td>
 				<td>{{{ $product->product_eancode }}}</td>
 				<td><a href="http://amazon.jp/dp/{{{ $product->product_asin }}}" target="new">{{{ $product->product_asin }}}</a></td>
+				<td>
 				@foreach($users as $user)
 					@if($user->id == $product->user_id)
-						<td>{{{ $user->name }}}</td>
+						{{{ $user->name }}}
 					@endif
 				@endforeach
+				</td>
 				<td>
 					@if($product->product_smileregistration == "新規登録済") <i class="fa fa-check-square-o" style="color: green;" aria-hidden="true"></i>
 					@endif{{{ $product->product_smileregistration }}}
