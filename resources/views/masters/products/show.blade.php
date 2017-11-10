@@ -34,11 +34,15 @@
 		</tr>
 		<tr>
 			<th>仕入先コード</th>
-			@foreach($suppliers as $supplier)
-				@if($supplier->id == $product->supplier_id)
-					<td>{{{ $supplier->supplier_code.'('. $supplier->supplier_name.')' }}}</td>
-				@endif
-			@endforeach
+			@if(is_null($product->supplier_id))
+				<td></td>
+			@else
+				@foreach($suppliers as $supplier)
+					@if($supplier->id == $product->supplier_id)
+						<td>{{{ $supplier->supplier_code.'('. $supplier->supplier_name.')' }}}</td>
+					@endif
+				@endforeach
+			@endif
 		</tr>
 		<tr>
 			<th>標準売上単価</th>
