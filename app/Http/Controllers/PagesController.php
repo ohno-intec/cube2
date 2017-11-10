@@ -27,8 +27,8 @@ class PagesController extends Controller {
      */
     public function index()
     {
-        $brands = DB::table('brands')->get();
-        $products = DB::table('products')->get();
+        $brands = DB::table('brands')->orderBy('id', 'desc')->take(10)->get();
+        $products = DB::table('products')->orderBy('id', 'desc')->take(10)->get();
         return view('home', ['brands' => $brands, 'products' => $products]);
     }
 
