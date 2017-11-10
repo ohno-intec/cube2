@@ -37,7 +37,7 @@ class ProductsController extends Controller
     {
         //
         //$products = DB::table('products')->orderBy('created_at','desc')->paginate(20);
-        $products = DB::table('products')->orderBy('product_code','asc')->paginate(20);
+        $products = DB::table('products')->orderBy('id','asc')->paginate(20);
         $suppliers = Supplier::all();
         $users = User::all();
         return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ]);
@@ -126,8 +126,8 @@ class ProductsController extends Controller
         //ファイルの整合性をチェック
         if(preg_match('/\.csv$/i', $file_name)){ //拡張子がCSVの場合
             //ファイル名を変更して移動
-            $file_name = preg_replace("/\.csv$/i", "", $file_name) . "_" . 'products' . '_' .time() . 'csv';
-            $file_path = $file->move(storage_path().'upload', $file_name);
+            $file_name = preg_replace("/\.csv$/i", "", $file_name) . "_" . 'products' . '_' .time() . '.csv';
+            $file_path = $file->move(storage_path().'/upload', $file_name);
 
             $csvFile = new \SplFileObject($file_path);
             $csvFile->setFlags(\SplFileObject::READ_CSV);
@@ -137,32 +137,48 @@ class ProductsController extends Controller
             $line = array();
 
             function getProductCode($brand_id){
-
                 $link = dbc();
                 //ブランドテーブルからブランドコードを取得
                 $sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
                 $result = mysqli_query($link, $sqlQuery);
                 $brand_code = mysqli_fetch_assoc($result);
                 $brand_code = $brand_code['brand_code']; //get brand_code
+                echo "getProductCodeの中:".$brand_code;
                 //プロダクトテーブルからブランドコードを検索し、その中のプロダクトコードが最大値のものを取得
-                $sqlQuery = "SELECT max(product_code) FROM products WHERE $brand_code = LEFT(product_code,char_length(product_code)-4)";
+                if($brand_code == 0){   //管理系コードの場合
+                    echo "管理系コード<br />";
+                    $sqlQuery = "SELECT max(product_code) FROM products WHERE product_code <= 9999";
+                }else{  //商品系コードの場合
+                    echo "商品系コード<br />";
+                    $sqlQuery = "SELECT max(product_code) FROM products WHERE $brand_code = LEFT(product_code,char_length(product_code)-4)";
+                }
                 $result = mysqli_query($link, $sqlQuery);
                 $product_code = mysqli_fetch_assoc($result);
                 $product_code = $product_code['max(product_code)'];
                 //print_r($product_code);
                 if(empty($product_code)){
-                    $new_product_code = $brand_code . '0001';//rowが0の場合は0001を採番
-                    return $new_product_code;
-                }else {
+                    echo "商品コードは空<br />";
+                    if($brand_code == 0){
+                        echo "管理系コード";
+                        $new_product_code = 1;//rowが0の場合は1を採番
+                        return $new_product_code;
+                    }else{
+                        echo "商品系コード<br />";
+                        $new_product_code = $brand_code . '0001';//rowが0の場合は0001を採番
+                        return $new_product_code;
+                    }
+                }else{
+                    echo "商品コードは存在<br />";
                     $new_product_code = $product_code + 1;  //rowが1以上の場合は最大値+1の値を採番
                     return $new_product_code;
                 }
+                echo "getProductCodeが終わりました";
             }
+
             foreach($csvFile as $line_key => $line){
                 foreach($line as $key => $value){
-                    $line[$key] = mb_convert_encoding($value, 'UTF-8', 'sjis-win');
+                    $line[$key] = mb_convert_encoding($value, 'UTF-8', 'sjis-win');//文字コードをUTF-8に変換
                 }
-
                 //If first line is item name in this data, first line is continued. 
                 if($line1 == "true" && $line_key == 0){
                     continue;
@@ -181,8 +197,8 @@ class ProductsController extends Controller
             $line = array();
 
             foreach($records as $line){
-                $modelnumber_count = DB::table('products')->where('product_modelnumber', $line[1])->count();
-                $name_count = DB::table('products')->where('product_name', $line[3])->count();
+                $modelnumber_count = DB::table('products')->where('product_modelnumber', $line[3])->count();
+                $name_count = DB::table('products')->where('product_name', $line[4])->count();
                 if($modelnumber_count > 0 || $name_count > 0){
                     array_push($error_message, '商品名'.$line[3]);
                     $error_count += 1;
@@ -191,9 +207,12 @@ class ProductsController extends Controller
                 $name_count = 0;
             }
             if($error_count > 0){
-                return redirect('masters/products')->with('duplication', '重複登録が' . $error_count.'件あります。ファイルを修正して再度アップロードしてください。')->with('duplication_message', $error_message);
+                return redirect('/masters/products/management')->with('duplication', '重複登録が' . $error_count.'件あります。ファイルを修正して再度アップロードしてください。')->with('duplication_message', $error_message);
             }
             
+            echo "<pre>レコード配列を展開します。<br>";
+                print_r($records);
+            echo "</pre>";
             $product_code_array = array();  //商品コードの存在チェック用配列を初期化
             //データ加工
             foreach($records as $key => $line){
@@ -246,6 +265,7 @@ class ProductsController extends Controller
 
                 $brand_code = $line[1];
                 $brand_record = DB::table('brands')->where('brand_code', $brand_code)->first();
+                //brand_codeでbrand_record
 
                 $brand_id = $brand_record->id;
 
@@ -270,26 +290,90 @@ class ProductsController extends Controller
                 //商品コード、商品名、索引を設定
                 //ひとまずbrand_idから新しいproduct_codeを取得
                 $new_product_code = getProductCode($brand_id);//現在商品コードの最大値プラス1
+                echo "<br>DBからproduct_codeを取得しました。</br>new_product_codeは【".$new_product_code."】です。";
 
                 //CSV内に同ブランドが複数存在する場合の処理 9/26ここが処理できていいない
                 //$records内のブランドコードを検索して2個目以降からは+1してからproduct_codeを設定する？？
                 //$new_product_codeが$records内に存在するかチェック array_keys
-                $bool = "";
 
+                $bool = False; //デフォルトをFalseにする→次のチェックで商品コードがまだ存在していなければFalseのまま
                 //新規商品コードが$records内にあるかチェック
-                foreach($records as $value){
-                    if(in_array($new_product_code, $value)){
-                        $bool = true;
+                echo "<br>キー".$key."、商品".$line[3]."について処理を開始します。";
+                $n = 0;
+                foreach($records as $checkKey => $value){
+                    $n += 1;
+                    echo "<br>".$n."回目の商品コード存在チェック";
+                    echo "<br>-----新規商品コードの存在チェックここから------<br>";
+                    echo "records内の商品コード有無をチェックします。<br>";
+                    echo "keyの確認".$key."と".$checkKey."です。<br>";
+                    if($new_product_code == $value[0] && $key == $checkKey){    //in_array($new_product_code, $value)
+                        echo "records内に商品コードが存在します<br>";
+                        echo "keyの確認".$key."と".$checkKey."です。商品は".$value[3]."です。<br>";
+                        echo "<br>".$value[3]."<br>";
+                        $bool = True;
+                        echo "<br>product_code_arrayを出力します<br>";
+                        print_r($product_code_array);
+                        if(empty($product_code_array)){
+                            $product_code_array[] = $value[0];
+                        }else{
+                            echo "<br>product_code_arrayにプッシュします。1<br>";
+                            $product_code_array[] = max($product_code_array) + 1;
+                        }
+                    }elseif($value[0] !== "" && $key == $checkKey){
+                        echo "records内の指定商品コードと一致しました。<br>";
+                        echo "keyの確認".$key."と".$checkKey."です。商品は".$value[3]."です。<br>";
+                        echo "指定商品コードは".$value[0]."です。<br>";
+
+                        echo "<br>product_code_arrayにプッシュします。2<br>";
                         $product_code_array[] = $value[0];
-                     }
+                        $bool = true;
+                    }elseif($value[0] == "" && $key == $checkKey && in_array($new_product_code, $product_code_array)){
+                        
+                        $counta = count($product_code_array);
+                        for($i=0; $i<$counta; $i++){
+                            $new_product_code += 1;
+                            if(!in_array($new_product_code, $product_code_array)){
+                                break;
+                            }
+                        }
+                        echo "<br>product_code_arrayにプッシュします。3<br>";
+                        $product_code_array[] = $new_product_code;
+                        $bool = true;
+
+                    }else{
+                            echo "商品コードは一致しません。<br>";
+                            echo "keyの確認".$key."と".$checkKey."です。商品は".$value[3]."です。<br>";
+                    }
+                    echo "<br>-----新規商品コードの存在チェックここまで------<br>";
                 }
 
                 //getProductCodeで取得した商品コードがすでに存在する場合は新たに商品コードを生成
-                if($bool === true){
+                echo "<br>recordsに商品コードが存在するかどうかのboolean:".$bool."<br>";
+                if($bool){
                     //配列内に存在していた場合、array_keysの戻り値のkeyの最大値を取得して$new_product_codeに加算
-                    $new_product_code = $new_product_code + max(array_keys($product_code_array, $new_product_code)) + 1;
+                    echo "<pre>";
+                    echo print_r($product_code_array);
+                    echo "</pre>";
+                    if($line[1] == 0){ //11/1追加
+                        echo "管理系コードの場合";
+                        $new_product_code = $new_product_code + max(array_keys($product_code_array));
+                        echo "<br>新たに商品コードを設定しました<br>".$new_product_code;
+                    }else{
+                        echo "商品系コードの場合</br></br>";
+
+                        if(!empty($line[0])){ //CSVファイルに商品コードが指定されていた場合
+                            echo "<br>CSVファイルに商品コードが指定されています。<br>";
+                            $new_product_code = $line[0];
+                        }else{
+                            //$new_product_code = $new_product_code + max(array_keys($product_code_array)) + 1;
+                        }
+                    }
                 }else{
+                    echo "records内に商品コードが存在しないのでproduct_code_arrayを初期化します</br></br>";
                     $product_code_array = array();
+                    echo "最初のブランド行です。product_code_arrayを設定します";
+                    echo "<br>product_code_arrayにプッシュします。5<br>";
+                    $product_code_array[] = $new_product_code;
                 }
 
                 $product_name = $brand_record->brand_name . " " . $line[3];   //商品名を確定
