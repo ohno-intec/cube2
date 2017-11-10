@@ -13,7 +13,7 @@
 
 		<div class="row">
 			<div class="form-group col-md-4">
-				<label>ブランド名</label>
+				<label>ブランド名[必須]</label>
 				<select name="brand_id" class="form-control">
 						<option>選択してください</option>
 					@foreach($brands as $brand)
@@ -24,29 +24,18 @@
 			<script type="text/javascript">
 
 				$("select[name=brand_id]").change(function(){
-
 					$brand_id = $(this).val();
-
 					$.ajax({
 						type:"POST",
 						url: "{{ asset('/php/getBrandCode.php') }}",
 						dataType:"text",
 						data: { "brand_id" : $brand_id}
 					}).done(function($new_product_code){
-
 						console.log($new_product_code);
-
 						$('input[name=product_code]').val($new_product_code);
-
-
 					}).fail(function(){
-
 						$('input[name=product_code]').val('商品コードが取得できませんでした');
-
 					});
-
-
-
 				});
 
 			</script>
@@ -75,6 +64,7 @@
 			<div class="form-group col-md-6">
 				<label>仕入先コード</label>
 				<select name="supplier_id" class="form-control">
+					<option value="">指定なし</option>
 					@foreach($suppliers as $supplier)
 					<option value="{{ $supplier->id }}">{{ $supplier->supplier_code . "(" . $supplier->supplier_name .")" }}</option>
 					@endforeach
