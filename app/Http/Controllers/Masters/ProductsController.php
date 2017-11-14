@@ -364,6 +364,7 @@ class ProductsController extends Controller
                         if(!empty($line[0])){ //CSVファイルに商品コードが指定されていた場合
                             echo "<br>CSVファイルに商品コードが指定されています。<br>";
                             $new_product_code = $line[0];
+                            $designation_code = true;
                         }else{
                             //$new_product_code = $new_product_code + max(array_keys($product_code_array)) + 1;
                         }
@@ -435,7 +436,7 @@ class ProductsController extends Controller
                                                'product_eancode' => $line[36],
                                                'product_asin' => '',
                                                'user_id' => $user_id, //current user
-                                               'product_smileregistration' => '新規未登録',
+                                               'product_smileregistration' => $designation == ture ? '新規登録済' : '新規未登録',
                                                'created_at' => date('Y-m-d H:i:s')
 
                                                 ]);
