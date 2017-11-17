@@ -266,7 +266,6 @@ class ProductsController extends Controller
                 $brand_code = $line[1];
                 $brand_record = DB::table('brands')->where('brand_code', $brand_code)->first();
                 //brand_codeでbrand_record
-                print_r($brand_record);
 
                 $brand_id = $brand_record->id;
 
