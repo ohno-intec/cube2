@@ -436,7 +436,7 @@ class ProductsController extends Controller
                                                'product_eancode' => $line[36],
                                                'product_asin' => '',
                                                'user_id' => $user_id, //current user
-                                               'product_smileregistration' => $designation == ture ? '新規登録済' : '新規未登録',
+                                               'product_smileregistration' => $designation_code == true ? '新規登録済' : '新規未登録',
                                                'created_at' => date('Y-m-d H:i:s')
 
                                                 ]);
