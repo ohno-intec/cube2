@@ -54,7 +54,11 @@
 					@elseif(session('duplication'))
 						<div class="alert alert-danger" role="alert">
 							{{ session('duplication')}}
-							{{ session('duplication_message') }}
+							<ul>
+							@foreach( session('duplication_message') as $line)
+								<li>{{ $line }}</li>
+							@endforeach
+							</ul>
 						</div>
 					@endif
 				</div>
