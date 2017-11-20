@@ -267,7 +267,7 @@ class ProductsController extends Controller
                 $brand_record = DB::table('brands')->where('brand_code', $brand_code)->first();
                 //brand_codeでbrand_record
 
-                if(isset($brand_code){}
+                //if(isset($brand_code){}
                 $brand_id = $brand_record->id;
 
                 //対象のsupplierレコードを取得
