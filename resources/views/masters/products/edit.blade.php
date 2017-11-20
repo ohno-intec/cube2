@@ -121,6 +121,7 @@
 				<label>仕入先コード</label>
 				<select name="supplier_id" class="form-control" data-type="default">
 					@foreach($suppliers as $supplier)
+						<option value="">指定なし</option>
 						<option value="{{{ $supplier->id }}}" @if($supplier->id == $product->supplier_id) selected @endif>{{{ $supplier->supplier_code.'('. $supplier->supplier_name.')' }}}</option>
 					@endforeach
 				</select>
