@@ -200,7 +200,7 @@ class ProductsController extends Controller
                 $modelnumber_count = DB::table('products')->where('product_modelnumber', $line[3])->count();
                 $name_count = DB::table('products')->where('product_name', $line[4])->count();
                 if($modelnumber_count > 0 || $name_count > 0){
-                    array_push($error_message, '商品名'.$line[3]);
+                    array_push($error_message, '商品名:'.$line[3]);
                     $error_count += 1;
                 }
                 $modelnumber_count = 0;
