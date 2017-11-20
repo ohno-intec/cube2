@@ -54,6 +54,7 @@
 					@elseif(session('duplication'))
 						<div class="alert alert-danger" role="alert">
 							{{ session('duplication')}}
+							{{ session('duplication_message') }}
 						</div>
 					@endif
 				</div>
