@@ -37,7 +37,7 @@ class ProductsController extends Controller
     {
         //
         //$products = DB::table('products')->orderBy('created_at','desc')->paginate(20);
-        $products = DB::table('products')->orderBy('id','asc')->paginate(100);
+        $products = DB::table('products')->orderBy('id','asc')->paginate(50);
         $suppliers = Supplier::all();
         $users = User::all();
         return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ]);
@@ -46,7 +46,7 @@ class ProductsController extends Controller
     public function search(Request $request){   //ajaxの場合は引数を$kewordにする
 
         $keyword = $request->input('keyword');
-        $products = DB::table('products')->where('product_name', 'like', "%{$keyword}%")->orderBy('created_at','desc')->paginate(20);
+        $products = DB::table('products')->where('product_name', 'like', "%{$keyword}%")->orderBy('created_at','desc')->paginate(50);
         //header('Content-Type: application/json');
         //echo json_encode($products);
         $suppliers = Supplier::all();
