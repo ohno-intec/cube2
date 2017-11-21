@@ -60,6 +60,18 @@
 							@endforeach
 							</ul>
 						</div>
+					@elseif(session('data_type_error'))
+						<div class="alert alert-danger" role="alert">
+							{{ session('data_type_error')}}
+							<ul>
+							@foreach( session('data_type_error_array') as $key => $line)
+								<li>
+									@foreach( $line as $value)
+										{{ $key }} の {{ $value }},
+									@endforeach
+								</li>
+							@endforeach
+							<ul>
 					@endif
 				</div>
 			</div>

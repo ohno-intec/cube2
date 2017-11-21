@@ -257,6 +257,7 @@ class ProductsController extends Controller
                         [34] => ﾏｽﾀｰ検索表示区分,
                         [35] => ﾏｽﾀｰ検索表示区分名,
                         [36] => JANｺｰﾄﾞ
+                        [37] => ASINコード
                     )
                 )
 
@@ -402,6 +403,129 @@ class ProductsController extends Controller
                 
                 $line = array_replace($line, $replacements);
                 $records = array_replace($records, array($key => $line));
+
+                /*
+                array(
+                    [0] => array( $key
+                        [0] => 商品ｺｰﾄﾞ, numeric
+                        [1] => ブランドコード, numeric
+                        [2] => ブランド名,
+                        [3] => 型番, string
+                        [4] => 商品名, string
+                        [5] => 索引, string
+                        [6] => 主仕入先ｺｰﾄﾞ, numeric
+                        [7] => 主仕入先名, 
+                        [8] => 標準売上単価, numeric
+                        [9] => 標準仕入単価, numeric
+                        [10] => 在庫評価単価, numeric
+                        [11] => 上代単価, numeric
+                        [12] => 新単価実施日,
+                        [13] => 新標準売上単価, numeric
+                        [14] => 新標準仕入単価, numeric
+                        [15] => 新在庫評価単価, numeric
+                        [16] => 新上代単価, numeric
+                        [17] => 在庫状況ｺｰﾄﾞ, numeric
+                        [18] => 在庫状況名,
+                        [19] => 商品大分類ｺｰﾄﾞ, numeric
+                        [20] => 商品大分類名,
+                        [21] => 商品小分類ｺｰﾄﾞ, numeric
+                        [22] => 商品小分類名,
+                        [23] => 商品種別ｺｰﾄﾞ, numeric
+                        [24] => 商品種別名,
+                        [25] => 在庫保有ｺｰﾄﾞ, numeric
+                        [26] => 在庫保有名,
+                        [27] => 棚コードｺｰﾄﾞ, numeric
+                        [28] => 棚コード名,
+                        [29] => 倉庫保有ｺｰﾄﾞ, numeric
+                        [30] => 倉庫保有名,
+                        [31] => 適正在庫数量, numeric
+                        [32] => 期首残数量, numeric
+                        [33] => 期首残金額, numeric
+                        [34] => ﾏｽﾀｰ検索表示区分, numeric
+                        [35] => ﾏｽﾀｰ検索表示区分名,
+                        [36] => JANｺｰﾄﾞ numeric
+                        [37] => ASINコード string
+                    )
+                )
+                */
+                //データ型のチェック
+
+                if(!is_numeric($line[0]) && !empty($line[0])){
+                    $dataTypeCheckArray[] = $line[0];
+                }elseif(!is_numeric($line[1]) && !empty($line[1])){
+                    $dataTypeCheckArray[] = $line[1];
+                }elseif(!is_string($line[3]) && !empty($line[3])){
+                    $dataTypeCheckArray[] = $line[3];
+                }elseif(!is_string($line[4]) && !empty($line[4])){
+                    $dataTypeCheckArray[] = $line[4];
+                }elseif(!is_string($line[5]) && !empty($line[5])){
+                    $dataTypeCheckArray[] = $line[5];
+                }elseif(!is_numeric($line[6]) && !empty($line[7])){
+                    $dataTypeCheckArray[] = $line[6];
+                }elseif(!is_numeric($line[8]) && !empty($line[8])){
+                    $dataTypeCheckArray[] = $line[8];
+                }elseif(!is_numeric($line[9]) && !empty($line[9])){
+                    $dataTypeCheckArray[] = $line[9];
+                }elseif(!is_numeric($line[10]) && !empty($line[10])){
+                    $dataTypeCheckArray[] = $line[10];
+                }elseif(!is_numeric($line[11]) && !empty($line[11])){
+                    $dataTypeCheckArray[] = $line[11];
+                }elseif(!is_numeric($line[13]) && !empty($line[13])){
+                    $dataTypeCheckArray[] = $line[13];
+                }elseif(!is_numeric($line[14]) && !empty($line[14])){
+                    $dataTypeCheckArray[] = $line[14];
+                }elseif(!is_numeric($line[15]) && !empty($line[15])){
+                    $dataTypeCheckArray[] = $line[15];
+                }elseif(!is_numeric($line[16]) && !empty($line[16])){
+                    $dataTypeCheckArray[] = $line[16];
+                }elseif(!is_numeric($line[17]) && !empty($line[17])){
+                    $dataTypeCheckArray[] = $line[17];
+                }elseif(!is_numeric($line[19]) && !empty($line[19])){
+                    $dataTypeCheckArray[] = $line[19];
+                }elseif(!is_numeric($line[21]) && !empty($line[21])){
+                    $dataTypeCheckArray[] = $line[21];
+                }elseif(!is_numeric($line[23]) && !empty($line[23])){
+                    $dataTypeCheckArray[] = $line[23];
+                }elseif(!is_numeric($line[25]) && !empty($line[25])){
+                    $dataTypeCheckArray[] = $line[25];
+                }elseif(!is_numeric($line[27]) && !empty($line[27])){
+                    $dataTypeCheckArray[] = $line[27];
+                }elseif(!is_numeric($line[29]) && !empty($line[29])){
+                    $dataTypeCheckArray[] = $line[29];
+                }elseif(!is_numeric($line[31]) && !empty($line[31])){
+                    $dataTypeCheckArray[] = $line[31];
+                }elseif(!is_numeric($line[32]) && !empty($line[32])){
+                    $dataTypeCheckArray[] = $line[32];
+                }elseif(!is_numeric($line[33]) && !empty($line[33])){
+                    $dataTypeCheckArray[] = $line[33];
+                }elseif(!is_numeric($line[34]) && !empty($line[34])){
+                    $dataTypeCheckArray[] = $line[34];
+                }elseif(!is_numeric($line[36]) && !empty($line[36])){
+                    $dataTypeCheckArray[] = $line[36];
+                }elseif(!is_string($line[37]) && !empty($line[37])){
+                    $dataTypeCheckArray[] = $line[37];
+                }
+
+                if(!empty($dataTypeCheckArray)){
+                    $key_names[] = $line[4];
+                    $dataTypeCheck[] = $dataTypeCheckArray;
+                }
+               $dataTypeCheckArray = array();
+            }
+
+            if(!empty($dataTypeCheckArray)){
+                $dataTypeCheck = array_combine($key_names, $dataTypeCheck);
+            }
+            /*
+            try{
+                if(isset($dataTypeCheck)){
+                }
+            }catch(\Exception $e){
+                redirect('masters/products/management')->with('data_type_error', $e)->with('data_type_error_array', $dataTypeCheckArray);
+            }*/
+
+            if(isset($dataTypeCheck)){
+                return redirect('/masters/products/management')->with('data_type_error', 'データ型に誤りがあります。')->with('data_type_error_array', $dataTypeCheck);
             }
 
 
@@ -435,7 +559,7 @@ class ProductsController extends Controller
                                                'product_boybalance' => $line[33],
                                                'product_showmastersearch' => $line[34],
                                                'product_eancode' => $line[36],
-                                               'product_asin' => '',
+                                               'product_asin' => $line[37],
                                                'user_id' => $user_id, //current user
                                                'product_smileregistration' => $designation_code == true ? '新規登録済' : '新規未登録',
                                                'created_at' => date('Y-m-d H:i:s')
