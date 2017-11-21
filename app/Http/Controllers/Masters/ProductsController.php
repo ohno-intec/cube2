@@ -37,7 +37,7 @@ class ProductsController extends Controller
     {
         //
         //$products = DB::table('products')->orderBy('created_at','desc')->paginate(20);
-        $products = DB::table('products')->orderBy('id','asc')->paginate(50);
+        $products = DB::table('products')->orderBy('id','asc')->paginate(100);
         $suppliers = Supplier::all();
         $users = User::all();
         return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ]);
