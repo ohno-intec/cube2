@@ -382,7 +382,7 @@ class ProductsController extends Controller
 
                 $product_name = $brand_record->brand_name . " " . $line[3];   //商品名を確定
 
-                if(strlen($product_name) > 36){
+                if(strlen( mb_convert_encoding($product_name, 'SJIS', 'UTF-8') ) > 36){
 
                     $product_name_lencheck[] = $product_name;
 
