@@ -209,11 +209,12 @@ class ProductsController extends Controller
             if($error_count > 0){
                 return redirect('/masters/products/management')->with('duplication', '重複登録が' . $error_count.'件あります。ファイルを修正して再度アップロードしてください。')->with('duplication_message', $error_message);
             }
-            
+
             //debug# echo "<pre>レコード配列を展開します。<br>";
                 //debug# print_r($records);
             //debug# echo "</pre>";
             $product_code_array = array();  //商品コードの存在チェック用配列を初期化
+            $product_name_lencheck = null;
             //データ加工
             foreach($records as $key => $line){
                 /*
@@ -380,6 +381,13 @@ class ProductsController extends Controller
                 }
 
                 $product_name = $brand_record->brand_name . " " . $line[3];   //商品名を確定
+
+                if(strlen($product_name) > 36){
+
+                    $product_name_lencheck[] = $product_name;
+
+                }
+
                 $product_index = substr(mb_strtolower($line[3]), 0, 10);   //型番を小文字にする
 
 
@@ -513,6 +521,10 @@ class ProductsController extends Controller
                $dataTypeCheckArray = array();
             }
 
+            if(isset($product_name_lencheck)){
+                return redirect('/masters/products/management')->with('product_name_lencheck', '商品名が長すぎます。')->with('product_name_lencheck_array', $product_name_lencheck);
+            }
+
             if(!empty($dataTypeCheckArray)){
                 $dataTypeCheck = array_combine($key_names, $dataTypeCheck);
             }
@@ -563,9 +575,9 @@ class ProductsController extends Controller
                                                'user_id' => $user_id, //current user
                                                'product_smileregistration' => $designation_code == true ? '新規登録済' : '新規未登録',
                                                'created_at' => date('Y-m-d H:i:s')
-
                                                 ]);
             }
+
             return redirect('masters/products/management')->with('success_message', '成功しました。');
         }else{ //拡張子がcsvじゃない場合
             return redirect('masters/products/management')->with('file_type_error', '無効なファイルが送信されました。ファイル形式を確認してください。');

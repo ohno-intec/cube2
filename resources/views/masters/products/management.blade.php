@@ -71,7 +71,17 @@
 									@endforeach
 								</li>
 							@endforeach
-							<ul>
+							</ul>
+						</div>
+					@elseif(session('product_name_lencheck'))
+						<div class="alert alert-danger" role="alert">
+							{{ session('product_name_lencheck') }}
+							@foreach( session('product_name_lencheck_array') as $line)
+								<li>
+									{{ $line }}
+								</li>
+							@endforeach
+						</div>
 					@endif
 				</div>
 			</div>
