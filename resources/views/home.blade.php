@@ -1,6 +1,7 @@
 @extends('layout') {{-- layout.blade.phpを拡張 --}}
 @section('content') {{-- sectionを定義 --}}
 <div>
+    {{--
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading"><h1>ダッシュボード</h1></div>
@@ -18,6 +19,7 @@
             </div>
         </div>
     </div>
+    --}}
     <div class="col-md-12">
     	<div class="panel panel-default">
     		<div class="panel-heading"><h1>登録状況</h1><p>最新の10件を表示</p></div>
