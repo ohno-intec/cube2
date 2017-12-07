@@ -16,6 +16,7 @@
  * });
  */
 
+Route::post('register/check_key', 'Auth\RegisterController@check_key');
 Auth::routes();
 
 //Route::get('/', 'PagesController@index')->name('home');
