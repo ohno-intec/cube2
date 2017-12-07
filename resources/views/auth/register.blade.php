@@ -5,7 +5,7 @@
 <div>
     <h1>ユーザー登録</h1>
 
-    <form class="form-horizontal" method="POST" action="{{ route('register') }}">
+    <form class="form-horizontal" method="POST" action="{{ url('register/check_key') }}">{{--{{ route('register') }}--}}
         {{ csrf_field() }}
 
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -59,9 +59,23 @@
         </div>
 
         <div class="form-group">
+            <label for="key" class="col-md-4 control-label">登録キー</label>
+            <div class="col-md-6">
+                <input id="key" type="test" class="form-control" name="key" required="">
+
+                @if (session('registration_error'))
+                    <span class="help-block">
+                        <strong>{{ session('registration_error') }}</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+
+
+        <div class="form-group">
             <div class="col-md-6 col-md-offset-4">
                 <button type="submit" class="btn btn-primary">
-                    Register
+                    登録
                 </button>
             </div>
         </div>
