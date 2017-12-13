@@ -369,6 +369,8 @@ class ProductsController extends Controller
                             $new_product_code = $line[0];
                             $designation_code = true;
                         }else{
+
+                            $designation_code = false;
                             //$new_product_code = $new_product_code + max(array_keys($product_code_array)) + 1;
                         }
                     }
@@ -585,6 +587,8 @@ class ProductsController extends Controller
             }
             catch(\Exception $e) {
                 DB::rollback();
+
+                dd($e);
 
                 //$eArray = (array)$e;
                 $eArray = json_decode(json_encode($e), true);
