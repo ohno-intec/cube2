@@ -545,39 +545,49 @@ class ProductsController extends Controller
             $user_id = Auth::id();
 
             //DBインサート
-            foreach($records as $line){
-                DB::table('products')->insert(['brand_id' => $line[1], //brand_codeからｂbrands DBを検索してbrand_idを取得
-                                               'product_code' => $line[0], //brand_codeでproducts DBを検索して、範囲内の最大値+1を取得 同じブランドがあった場合は増えるごとにプラス1する
-                                               'product_modelnumber' => $line[3],
-                                               'product_name' => $line[4],
-                                               'product_index' => $line[5],
-                                               'supplier_id' => $line[6],
-                                               'product_unitprice' => $line[8],
-                                               'product_costprice' => $line[9],
-                                               'product_stockprice' => $line[10],
-                                               'product_retailprice' => $line[11],
-                                               'product_newpricestartdate' => $line[12] == 0 ? null : $line[12],
-                                               'product_newunitprice' => $line[13],
-                                               'product_newcostprice' => $line[14],
-                                               'product_newstockprice' => $line[15],
-                                               'product_newretailprice' => $line[16],
-                                               'category_id' => $line[21],
-                                               'product_typecode' => $line[23],
-                                               'product_stockholdingcode' => $line[25],
-                                               'product_rackcode' => $line[27],
-                                               'product_warehouseholdingcode' => $line[29],
-                                               'product_properstockquantity' => $line[31],
-                                               'product_boystockquantity' => $line[32],
-                                               'product_boybalance' => $line[33],
-                                               'product_showmastersearch' => $line[34],
-                                               'product_eancode' => $line[36],
-                                               'product_asin' => $line[37],
-                                               'user_id' => $user_id, //current user
-                                               'product_smileregistration' => $designation_code == true ? '新規登録済' : '新規未登録',
-                                               'created_at' => date('Y-m-d H:i:s')
-                                                ]);
+            $i;
+            DB::beginTransaction();
+            try {
+                foreach($records as $line){
+                    DB::table('products')->insert(['brand_id' => $line[1], //brand_codeからｂbrands DBを検索してbrand_idを取得
+                                                   'product_code' => $line[0], //brand_codeでproducts DBを検索して、範囲内の最大値+1を取得 同じブランドがあった場合は増えるごとにプラス1する
+                                                   'product_modelnumber' => $line[3],
+                                                   'product_name' => $line[4],
+                                                   'product_index' => $line[5],
+                                                   'supplier_id' => $line[6],
+                                                   'product_unitprice' => $line[8],
+                                                   'product_costprice' => $line[9],
+                                                   'product_stockprice' => $line[10],
+                                                   'product_retailprice' => $line[11],
+                                                   'product_newpricestartdate' => $line[12] == 0 ? null : $line[12],
+                                                   'product_newunitprice' => $line[13],
+                                                   'product_newcostprice' => $line[14],
+                                                   'product_newstockprice' => $line[15],
+                                                   'product_newretailprice' => $line[16],
+                                                   'category_id' => $line[21],
+                                                   'product_typecode' => $line[23],
+                                                   'product_stockholdingcode' => $line[25],
+                                                   'product_rackcode' => $line[27],
+                                                   'product_warehouseholdingcode' => $line[29],
+                                                   'product_properstockquantity' => $line[31],
+                                                   'product_boystockquantity' => $line[32],
+                                                   'product_boybalance' => $line[33],
+                                                   'product_showmastersearch' => $line[34],
+                                                   'product_eancode' => $line[36],
+                                                   'product_asin' => $line[37],
+                                                   'user_id' => $user_id, //current user
+                                                   'product_smileregistration' => $designation_code == true ? '新規登録済' : '新規未登録',
+                                                   'created_at' => date('Y-m-d H:i:s')
+                                                    ]);
+                    $i += 1;
+                }
+                DB::commit();
             }
+            catch(Exception $e) {
+                DB::rollback;
 
+                return redirect('masters/products/management')->with('exception_error', '登録中にエラーが発生しました。エラーメッセージを確認してください。')->with('exception_message', $e);
+            }
             return redirect('masters/products/management')->with('success_message', '成功しました。');
         }else{ //拡張子がcsvじゃない場合
             return redirect('masters/products/management')->with('file_type_error', '無効なファイルが送信されました。ファイル形式を確認してください。');
