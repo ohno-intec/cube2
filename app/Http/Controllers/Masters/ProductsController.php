@@ -608,8 +608,7 @@ class ProductsController extends Controller
 
     public function batchfile_download(Request $request){
 
-        $products = Product::where('product_smileregistration', '新規未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
-
+        $products = Product::where('product_smileregistration', '=', '新規未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
 
 
         //$productsをforeachで回してデータを修正
@@ -650,7 +649,10 @@ class ProductsController extends Controller
             'product_showmastersearchname' => "ﾏｽﾀｰ検索表示区分名",
             'product_eancode' => "JANｺｰﾄﾞ"
         );
+        //ダウンロードファイル用の項目名を設定
         $data[] = $itemname;
+
+
 
         foreach($products as $key => $value){
 
@@ -659,14 +661,18 @@ class ProductsController extends Controller
 
             //supplier_idから仕入先コード取得
             //$supplier_record = DB::table('suppliers')->where('supplier_code', $supplier_code)->first();
-            $supplier = Supplier::where('id', $supplier_id)->first();
-            $supplier_code = $supplier->supplier_code;
-            $supplier_name = $supplier->supplier_name;
+            if(!is_null($supplier_id)){
+                $supplier = Supplier::where('id', '=', $supplier_id)->first();
+                $supplier_code = $supplier->supplier_code;
+                $supplier_name = $supplier->supplier_name;
+            }
 
             //category_idからカテゴリーコード取得
-            $category = Category::where('id', $category_id)->first();
-            $category_code = $category->category_code;
-            $category_name = $category->category_name;
+            if(!is_null($category_id)){
+                $category = Category::where('id', '=', $category_id)->first();
+                $category_code = $category->category_code;
+                $category_name = $category->category_name;
+            }
 
             //$replace = array();
 
@@ -674,8 +680,8 @@ class ProductsController extends Controller
                 'product_code' => $value['product_code'],
                 'product_name' => $value['product_name'],
                 'product_index' => $value['product_index'],
-                'supplier_code' => $supplier_code,
-                'supplier_name' => $supplier_name,
+                'supplier_code' => isset($supplier_code) ? $supplier_code : "",
+                'supplier_name' => isset($supplier_name) ? $supplier_name : "",
                 'product_unitprice' => $value['product_unitprice'],
                 'product_costprice' => $value['product_costprice'],
                 'product_stockprice' => $value['product_stockprice'],
