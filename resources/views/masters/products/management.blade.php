@@ -84,9 +84,9 @@
 						</div>
 					@elseif(session('exception_error'))
 						<div class="alert alert-danger" role="alert">
-							{{ session('exception_error')}}
+							{{ session('exception_error') }}
 							<div>
-							print_r({{ session('exception_message') }});
+							{{ print_r(session('exception_message')) }}
 							</div>
 						</div>
 					@endif

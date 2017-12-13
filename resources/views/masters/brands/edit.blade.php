@@ -16,11 +16,11 @@
 		</div>
 		<div class="form-group">
 			<label>サブブランド名</label>
-			<input required class="form-control" name="brand_subname" type="text" value="{{{ $brand->brand_subname }}}" />
+			<input class="form-control" name="brand_subname" type="text" value="{{{ $brand->brand_subname }}}" />
 		</div>
 		<div class="form-group">
 			<label>ブランドの説明</label>
-			<textarea required class="form-control" name="brand_description" type="text">{{{ $brand->brand_description }}}</textarea>
+			<textarea class="form-control" name="brand_description" type="text">{{{ $brand->brand_description }}}</textarea>
 		</div>
 		<div class="form-group">
 			<label>ブランドカテゴリ</label>

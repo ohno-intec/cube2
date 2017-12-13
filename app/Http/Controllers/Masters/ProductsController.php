@@ -545,7 +545,7 @@ class ProductsController extends Controller
             $user_id = Auth::id();
 
             //DBインサート
-            $i;
+            $i = 0;
             DB::beginTransaction();
             try {
                 foreach($records as $line){
@@ -583,10 +583,14 @@ class ProductsController extends Controller
                 }
                 DB::commit();
             }
-            catch(Exception $e) {
-                DB::rollback;
+            catch(\Exception $e) {
+                DB::rollback();
 
-                return redirect('masters/products/management')->with('exception_error', '登録中にエラーが発生しました。エラーメッセージを確認してください。')->with('exception_message', $e);
+                //$eArray = (array)$e;
+                $eArray = json_decode(json_encode($e), true);
+                //dd($eArray);
+                return redirect('masters/products/management')->with('exception_error', '登録中にエラーが発生しました。エラーメッセージを確認してください。')->with('exception_message', $eArray);
+
             }
             return redirect('masters/products/management')->with('success_message', '成功しました。');
         }else{ //拡張子がcsvじゃない場合
