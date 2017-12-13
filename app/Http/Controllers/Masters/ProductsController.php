@@ -470,7 +470,7 @@ class ProductsController extends Controller
                     $dataTypeCheckArray[] = $line[4];
                 }elseif(!is_string($line[5]) && !empty($line[5])){
                     $dataTypeCheckArray[] = $line[5];
-                }elseif(!is_numeric($line[6]) && !empty($line[7])){
+                }elseif(!is_numeric($line[6]) && !empty($line[6])){
                     $dataTypeCheckArray[] = $line[6];
                 }elseif(!is_numeric($line[8]) && !empty($line[8])){
                     $dataTypeCheckArray[] = $line[8];
