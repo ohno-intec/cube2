@@ -718,9 +718,9 @@ class ProductsController extends Controller
         //新規CSVファイル生成
 
         $file_name = 'smile_newproducts_reg_'.time().'.txt'; //CSVにする場合は拡張子変更
-        $file_handler = storage_path().'\smile';
+        $file_handler = storage_path().'smile';
 
-        $txtfile = fopen($file_handler.'\\'.$file_name, "w");
+        $txtfile = fopen($file_handler.'/'.$file_name, "w");
 
         if($txtfile){
             foreach($data as $value){
@@ -737,7 +737,7 @@ class ProductsController extends Controller
 
         //ダウンロードURLを戻す
         $headers = ['Content-Type' => 'text/csv'];
-        return Response::download($file_handler.'\\'.$file_name, $file_name, $headers);
+        return Response::download($file_handler.'/'.$file_name, $file_name, $headers);
         //return redirect('masters/products')->with('download_path', $file_handler.'\\'.$file_name)->with('file_name', $file_name);
 
     }
