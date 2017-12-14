@@ -16,6 +16,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 require_once(public_path().'/php/dbc.php');
+require_once(public_path().'/php/function.php');
 
 class ProductsController extends Controller
 {
@@ -109,11 +110,12 @@ class ProductsController extends Controller
         $this->product->save();
         //Mail::to($request->user())->send("新規商品登録依頼");
 
+        /*
         $data = Product::select('product_code', 'product_name', 'product_modelnumber', 'product_name')->get();
         csvoutput('product', $data);
-
+        */
         return redirect()->to('masters/products');
-        
+
     }
 
 

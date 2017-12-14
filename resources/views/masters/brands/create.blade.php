@@ -8,7 +8,7 @@
 			<p>ブランドコードは自動で付与されます。</p>
 		</div>
 		<div class="form-group">
-			<label>ブランド名</label>
+			<label>ブランド名[必須 ：　半角ｶﾅのみ 例：ソーラス(NG) => ｿｰﾗｽ(OK) スペースや記号もNG]</label>
 			<input required class="form-control" name="brand_name" type="text" value="{{{ old('brand_name') }}}" />
 		</div>
 		<div class="form-group">
@@ -20,7 +20,7 @@
 			<textarea class="form-control" name="brand_description" type="text">{{{ old('brand_description') }}}</textarea>
 		</div>
 		<div class="form-group">
-			<label>ブランドカテゴリ</label>
+			<label>ブランドカテゴリ[必須]</label>
 			<select name="brand_category">
 				<option　value="自社オリジナル">自社オリジナル</option>
 				<option value="自社ライセンス">自社ライセンス</option>
