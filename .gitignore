@@ -12,7 +12,6 @@ yarn-error.log
 .env
 /public/php/dbc.php
 *.csv
-/storage/download
-/storage/reference
-/storage/smile
-/storage/upload
+storage/reference
+storage/smile
+storage/upload
