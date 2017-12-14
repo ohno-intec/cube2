@@ -1,6 +1,5 @@
 @extends('layout')
 @section('content')
-
 	<h2 class="page-header">ブランド登録</h2>
 
 	<form action="{{ url('masters/brands') }}" method="post" class="form-horizontal">

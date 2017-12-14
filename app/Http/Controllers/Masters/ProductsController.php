@@ -113,6 +113,7 @@ class ProductsController extends Controller
         csvoutput('product', $data);
 
         return redirect()->to('masters/products');
+        
     }
 
 

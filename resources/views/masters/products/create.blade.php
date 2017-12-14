@@ -181,7 +181,6 @@
 			<input class="form-control" type="text" name="product_asin" value="{{ old('product_asin') }}">
 		</div>
 		<input type="hidden" name="product_smileregistration" value="新規未登録">
-
 		<div class="form-group">
 			<input type="submit" class="btn btn-primary" />
 		</div>

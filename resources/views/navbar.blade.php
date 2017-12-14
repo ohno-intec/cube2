@@ -14,7 +14,6 @@
 			<ul class="nav navbar-nav">
 
 				<li class="dropdown">{{HTML::linkAction('PagesController@index', 'ホーム')}}</li>
-
 				<li class="dropdown">{{HTML::linkAction('PagesController@master', 'マスタ管理')}}
 					<ul class="dropdown-menu">
 						{{--

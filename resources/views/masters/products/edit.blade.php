@@ -17,7 +17,6 @@
 		</div>
 	</div>
 
-
 	<script>
 	$(function(){
 			var product_smileregistration = $("input[name=product_smileregistration]:checked").val();
