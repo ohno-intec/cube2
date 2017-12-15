@@ -182,22 +182,27 @@ class ProductsController extends Controller
                 foreach($line as $key => $value){
                     $line[$key] = mb_convert_encoding($value, 'UTF-8', 'sjis-win');//文字コードをUTF-8に変換
                 }
+
                 //If first line is item name in this data, first line is continued. 
                 if($line1 == "true" && $line_key == 0){
                     continue;
                 }
+
                 //終端の空レコードを削除
                 if(max(array_keys($line)) == ""){
                     continue;
                 }
                 $records[] = $line; //Create array of csv
             }
+
+
             //重複登録チェック、バリデーション
             $error_message = array();
             $modelnumber_count = 0;
             $name_count = 0;
             $error_count = 0;
             $line = array();
+
 
             foreach($records as $line){
                 $modelnumber_count = DB::table('products')->where('product_modelnumber', $line[3])->count();
@@ -417,6 +422,7 @@ class ProductsController extends Controller
                 $line = array_replace($line, $replacements);
                 $records = array_replace($records, array($key => $line));
 
+
                 /*
                 array(
                     [0] => array( $key
@@ -551,8 +557,10 @@ class ProductsController extends Controller
 
             //DBインサート
             $i = 0;
-            DB::beginTransaction();
+           //dd(print_r($user_id));
             try {
+            DB::beginTransaction();
+
                 foreach($records as $line){
                     DB::table('products')->insert(['brand_id' => $line[1], //brand_codeからｂbrands DBを検索してbrand_idを取得
                                                    'product_code' => $line[0], //brand_codeでproducts DBを検索して、範囲内の最大値+1を取得 同じブランドがあった場合は増えるごとにプラス1する
@@ -586,6 +594,7 @@ class ProductsController extends Controller
                                                     ]);
                     $i += 1;
                 }
+
                 DB::commit();
             }
             catch(\Exception $e) {
@@ -676,6 +685,8 @@ class ProductsController extends Controller
                 $category_code = $category->category_code;
                 $category_name = $category->category_name;
             }
+            echo($category_code);
+            dd();
 
             //$replace = array();
 
