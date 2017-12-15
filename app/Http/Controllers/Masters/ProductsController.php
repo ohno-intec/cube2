@@ -622,7 +622,9 @@ class ProductsController extends Controller
 
         $products = Product::where('product_smileregistration', '=', '新規未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
 
-            var_dump($products);
+            echo "<pre>";
+            var_dump($products->category_id);
+            echo "</pre>";
             dd();
         //$productsをforeachで回してデータを修正
 
