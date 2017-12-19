@@ -606,7 +606,6 @@ class ProductsController extends Controller
                 $eArray = json_decode(json_encode($e), true);
                 //dd($eArray);
                 return redirect('masters/products/management')->with('exception_error', '登録中にエラーが発生しました。エラーメッセージを確認してください。')->with('exception_message', $eArray);
-
             }
             return redirect('masters/products/management')->with('success_message', '成功しました。');
         }else{ //拡張子がcsvじゃない場合
@@ -622,10 +621,7 @@ class ProductsController extends Controller
 
         $products = Product::where('product_smileregistration', '=', '新規未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
 
-            echo "<pre>";
-            var_dump($products->category_id);
-            echo "</pre>";
-            dd();
+
         //$productsをforeachで回してデータを修正
 
         $itemname = array(
