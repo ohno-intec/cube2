@@ -114,7 +114,7 @@
 					@if($product->product_smileregistration == "新規登録済") <i class="fa fa-check-square-o" style="color: green;" aria-hidden="true"></i>
 					@endif{{{ $product->product_smileregistration }}}
 
-					@if($user->id == 2 and $product->product_smileregistration == "新規未登録")
+					@if($user->id == 3 || $user->id = 4 and $product->product_smileregistration == "新規未登録")
 						<form action="{{ url("masters/products/smilecomplete") }}" method="post">
 							{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{ $product->id }}">
