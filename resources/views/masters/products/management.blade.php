@@ -89,6 +89,10 @@
 							{{ print_r(session('exception_message')) }}
 							</div>
 						</div>
+					@elseif(session('brand_id_error'))
+						<div class="alert alert-danger" role="alert">
+							{{ session('brand_id_error') }}
+						</div>
 					@endif
 				</div>
 			</div>

@@ -203,12 +203,21 @@ class ProductsController extends Controller
             $error_count = 0;
             $line = array();
 
-
             foreach($records as $line){
-                $modelnumber_count = DB::table('products')->where('product_modelnumber', $line[3])->count();
+                //対象のbrandレコードを取得
+                $brand_code = $line[1];
+                $brand_record = DB::table('brands')->where('brand_code', $brand_code)->first();
+
+                if(is_null($brand_record)){
+                    return redirect('masters/products/management')->with('brand_id_error', 'ブランドIDが見つかりません。ブランドマスタにブランドが登録されているか、もしくはブランドコードが正しいか確認してください。');
+                }
+
+                //$modelnumber_count = DB::table('products')->where('product_modelnumber', $line[3])->count();
+                $modelnumber_count = DB::table('products')->where('product_name', $brand_record->brand_name . " " . $line[3])->count();
+
                 $name_count = DB::table('products')->where('product_name', $line[4])->count();
                 if($modelnumber_count > 0 || $name_count > 0){
-                    array_push($error_message, '商品名:'.$line[3]);
+                    array_push($error_message, '商品名:' . $brand_record->brand_name . " " . $line[3]);
                     $error_count += 1;
                 }
                 $modelnumber_count = 0;
@@ -272,13 +281,15 @@ class ProductsController extends Controller
 
                 */
                 //対象のbrandレコードを取得
-
                 $brand_code = $line[1];
                 $brand_record = DB::table('brands')->where('brand_code', $brand_code)->first();
-                //brand_codeでbrand_record
 
                 //if(isset($brand_code){}
-                $brand_id = $brand_record->id;
+                if(is_null($brand_record)){
+                    return redirect('masters/products/management')->with('brand_id_error', 'ブランドIDが見つかりません。ブランドマスタにブランドが登録されているか、もしくはブランドコードが正しいか確認してください。');
+                }else{
+                    $brand_id = $brand_record->id;
+                }
 
                 //対象のsupplierレコードを取得
                 $supplier_code = $line[6];
