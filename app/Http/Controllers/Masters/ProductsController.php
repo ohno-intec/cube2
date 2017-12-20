@@ -705,9 +705,9 @@ class ProductsController extends Controller
                 'product_newretailprice' => $value['product_newretailprice'],
                 'product_stockstatuscode' => '',/*this item isn't in DB. */
                 'product_sotcksatusname' => '',
-                'bigcategory_code' => substr($category_code, 0 ,2),
+                'bigcategory_code' => isset($category_code) ? (substr($category_code, 0 ,2) : '',
                 'bigcategory_name' => '',
-                'smallcategory_code' => $category_code,
+                'smallcategory_code' => isset($category_code) ? $category_code : '',
                 'smallcategory_name' => $category_name,
                 'product_typecode' => $value['product_typecode'],
                 'product_typename' => '',
