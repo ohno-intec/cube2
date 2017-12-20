@@ -708,7 +708,7 @@ class ProductsController extends Controller
                 'bigcategory_code' => isset($category_code) ? substr($category_code, 0 ,2) : '',
                 'bigcategory_name' => '',
                 'smallcategory_code' => isset($category_code) ? $category_code : '',
-                'smallcategory_name' => $category_name,
+                'smallcategory_name' => isset($category_name) ? $category_name : '',
                 'product_typecode' => $value['product_typecode'],
                 'product_typename' => '',
                 'product_stockholdingcode' => $value['product_stockholdingcode'],
