@@ -46,8 +46,37 @@
 						});
 					});
 				});
+
 			</script>
 			--}}
+
+			<script type="text/javascript">
+				(function(){
+
+					var smile_checkbox;
+					var smile_button = document.getElementById("smileupdate_button");
+					console.log(smile_button);
+
+					smile_button.addEventListener("click", function(){
+						alert('aaa');
+						var jsondata = {'id' : [], 'check' : []};
+						var smile_checkbox = document.getElementByClassName('mileregistrationcheck');
+						console.log(smile_checkbox);
+
+						var xhr = new XMLHttpRequest();
+						xhr.open('POST', 'masters/products/smilecompleteall', true);
+						xhr.setRequestHeader("Content-type", "application/json");
+						xhr.send(JSON.stringify(data));
+
+					}, false);
+
+
+
+
+
+
+				})();
+			</script>
 		</div>
 	</div>
 	<table class="table table-straiped table-hover">
@@ -68,7 +97,13 @@
 				<th>EAN(JAN)</th>
 				<th>ASIN(amazon)</th>
 				<th>申請ユーザー</th>
-				<th>スマイル登録状況</th>
+				<th>
+					スマイル登録状況
+					<?php $current_user = Auth::user() ;?>
+					@if($current_user->id == 3 || $current_user->id == 4)
+						<input type="button" value="一括更新" id="smileupdate_button">
+					@endif
+				</th>
 				<th>スマイル登録状況のコメント</th>
 				<th>ステータス</th>
 				<th>在庫状況</th>
@@ -105,16 +140,22 @@
 				<td><a href="http://amazon.jp/dp/{{{ $product->product_asin }}}" target="new">{{{ $product->product_asin }}}</a></td>
 				<td>
 				@foreach($users as $user)
+					<span style="color:red">{{$user->id}}</span>/{{$product->user_id}}<br />
 					@if($user->id == $product->user_id)
 						{{{ $user->name }}}
 					@endif
 				@endforeach
+
 				</td>
 				<td>
-					@if($product->product_smileregistration == "新規登録済") <i class="fa fa-check-square-o" style="color: green;" aria-hidden="true"></i>
-					@endif{{{ $product->product_smileregistration }}}
+					@if($product->product_smileregistration == "新規登録済")
+						<i class="fa fa-check-square-o" style="color: green;" aria-hidden="true"></i>
+					@endif
 
-					@if($user->id == 3 || $user->id = 4 and $product->product_smileregistration == "新規未登録")
+					{{{ $product->product_smileregistration }}}
+
+					@if($current_user->id == 3 || $current_user->id == 4 and $product->product_smileregistration == "新規未登録")
+						<input type="checkbox" name="smileregistrationcheck" data-id="{{ $product->id }}" class="smileregistrationcheck">
 						<form action="{{ url("masters/products/smilecomplete") }}" method="post">
 							{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{ $product->id }}">

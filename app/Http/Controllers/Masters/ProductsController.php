@@ -41,7 +41,8 @@ class ProductsController extends Controller
         $products = DB::table('products')->orderBy('id','desc')->paginate(50);
         $suppliers = Supplier::all();
         $users = User::all();
-        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ]);
+        //$requested_user = DB::table('users')->where('id', $products->user_id)->value('name');
+        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users]);
     }
 
     public function search(Request $request){   //ajaxの場合は引数を$kewordにする
@@ -74,6 +75,21 @@ class ProductsController extends Controller
         $data->product_smileregistration = $request->product_smileregistration;
         $data->save();
         return redirect()->to('masters/products');
+    }
+
+    public function smilecomplete_all(Request $request)
+    {
+        /*
+        *
+        *
+        *
+        */
+
+        //$data = Product::find($request->);
+        $smilecomplete_all = $request;
+
+
+
     }
 
     /**
