@@ -49,34 +49,6 @@
 
 			</script>
 			--}}
-
-			<script type="text/javascript">
-				(function(){
-
-					var smile_checkbox;
-					var smile_button = document.getElementById("smileupdate_button");
-					console.log(smile_button);
-
-					smile_button.addEventListener("click", function(){
-						alert('aaa');
-						var jsondata = {'id' : [], 'check' : []};
-						var smile_checkbox = document.getElementByClassName('mileregistrationcheck');
-						console.log(smile_checkbox);
-
-						var xhr = new XMLHttpRequest();
-						xhr.open('POST', 'masters/products/smilecompleteall', true);
-						xhr.setRequestHeader("Content-type", "application/json");
-						xhr.send(JSON.stringify(data));
-
-					}, false);
-
-
-
-
-
-
-				})();
-			</script>
 		</div>
 	</div>
 	<table class="table table-straiped table-hover">
@@ -140,7 +112,6 @@
 				<td><a href="http://amazon.jp/dp/{{{ $product->product_asin }}}" target="new">{{{ $product->product_asin }}}</a></td>
 				<td>
 				@foreach($users as $user)
-					<span style="color:red">{{$user->id}}</span>/{{$product->user_id}}<br />
 					@if($user->id == $product->user_id)
 						{{{ $user->name }}}
 					@endif
@@ -155,7 +126,7 @@
 					{{{ $product->product_smileregistration }}}
 
 					@if($current_user->id == 3 || $current_user->id == 4 and $product->product_smileregistration == "新規未登録")
-						<input type="checkbox" name="smileregistrationcheck" data-id="{{ $product->id }}" class="smileregistrationcheck">
+						<input type="checkbox" name="smileCheck" data-id="{{ $product->id }}" class="smileCheck">
 						<form action="{{ url("masters/products/smilecomplete") }}" method="post">
 							{{ csrf_field() }}
 							<input type="hidden" name="id" value="{{ $product->id }}">
@@ -171,7 +142,13 @@
 				<td>{{{ $product->product_orderstatus }}}</td>
 				<td>{{{ $product->product_arrivaldate }}}</td>
 				<td>{{{ $product->product_ordernote }}}</td>
-				<td><img src="url('{{{ $product->product_imageurl }}}')" /></td>
+				<td>
+					@if(isset($product->product_asin))
+						<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.THUMBZZZ.jpg" />
+					@else
+						<img src="url('{{{ $product->product_imageurl }}}')" />
+					@endif
+				</td>
 				<td>
 					<a href="{{ url("masters/products/{$product->id}") }}" class="btn btn-primary">詳細</a>
 					<a href="{{ url("masters/products/{$product->id}/edit") }}" class="btn btn-primary">編集</a>
@@ -186,4 +163,47 @@
 		</tbody>
 	</table>
 	{{ $products->links() }}
+			<script type="text/javascript">
+				(function(){
+
+					var smile_checkbox;	//
+					var smile_button = document.getElementById("smileupdate_button");
+
+					var object = {};
+					var check_array = new Array();
+					var check_array2 = new Object();
+			
+					smile_button.addEventListener("click", function(){
+						var jsondata = {};
+						var smile_checkbox = document.getElementsByClassName('smileCheck');
+
+						for ( var i = 0; i < smile_checkbox.length; i++){
+							if(smile_checkbox[i].checked == true){
+								check_array = {id: smile_checkbox[i].getAttribute("data-id"), check: smile_checkbox[i].checked};
+
+								check_array2.push(check_array);
+
+								jsondata['id'] = smile_checkbox[i].getAttribute("data-id");
+								jsondata['check'] = smile_checkbox[i].checked;
+								object.items.push[jsondata];
+							}
+						}
+
+						console.log(check_array2);
+
+						var xhr = new XMLHttpRequest();
+						xhr.open('POST', 'masters/products/smilecompleteall', true);
+						xhr.setRequestHeader("Content-type", "application/json");
+						xhr.send(JSON.stringify(jsondata));
+						
+
+					}, false);
+
+
+
+
+
+
+				})();
+			</script>
 @endsection('content')
