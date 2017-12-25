@@ -179,7 +179,13 @@
 		</tr>
 		<tr>
 			<th>商品画像</th>
-			<td><img src="url('{{{ $product->imageurl }}}')" /></td>
+			<td>
+					@if(isset($product->product_asin))
+						<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.LZZZZZZZ.jpg" />
+					@else
+						<img src="url('{{{ $product->product_imageurl }}}')" />
+					@endif
+			</td>
 		</tr>
 		<tr>
 			<th>商品サイズ</th>

@@ -363,7 +363,11 @@
 		<div class="row">
 			<div class="form-group col-md-3">
 				<label>商品画像</label>
-				<img src="\\ALPHA\Corporate\40_Product\10_OurProduct url('{{{ $product->imageurl }}}')" />
+				@if(isset($product->product_asin))
+					<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.LZZZZZZZ.jpg" />
+				@else
+					<img src="url('{{{ $product->product_imageurl }}}')" />
+				@endif
 				<input type="file" name="produt_imageurl" value="{{{ $product->imageurl }}}" />
 			</div>
 			<div class="form-group col-md-9">
