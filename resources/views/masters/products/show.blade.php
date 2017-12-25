@@ -181,7 +181,7 @@
 			<th>商品画像</th>
 			<td>
 					@if(isset($product->product_asin))
-						<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.LZZZZZZZ.jpg" />
+						<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.MZZZZZZZ.jpg" />
 					@else
 						<img src="url('{{{ $product->product_imageurl }}}')" />
 					@endif

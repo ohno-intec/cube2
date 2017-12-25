@@ -364,7 +364,7 @@
 			<div class="form-group col-md-3">
 				<label>商品画像</label>
 				@if(isset($product->product_asin))
-					<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.LZZZZZZZ.jpg" />
+					<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.MZZZZZZZ.jpg" />
 				@else
 					<img src="url('{{{ $product->product_imageurl }}}')" />
 				@endif
