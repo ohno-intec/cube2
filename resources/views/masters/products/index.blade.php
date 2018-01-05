@@ -73,7 +73,8 @@
 					スマイル登録状況
 					<?php $current_user = Auth::user() ;?>
 					@if($current_user->id == 3 || $current_user->id == 4)
-						<input type="button" value="一括更新" id="smileupdate_button">
+						<input type="button" value="未登録の全てにチェック" id="smileAllCheck_button">
+						<input type="button" value="未登録の全てにチェック" id="">
 					@endif
 				</th>
 				<th>スマイル登録状況のコメント</th>
@@ -145,6 +146,8 @@
 				<td>
 					@if(isset($product->product_asin))
 						<img src="http://images-jp.amazon.com/images/P/{{ $product->product_asin }}.09.THUMBZZZ.jpg" />
+					@elseif(isset($product->product_eancode))
+						<img src="http://images-jp.amazon.com/images/P/{{ $product->product_eancode}}.09.THUMBZZZ.jpg" />
 					@else
 						<img src="url('{{{ $product->product_imageurl }}}')" />
 					@endif

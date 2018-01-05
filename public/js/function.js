@@ -33,7 +33,7 @@ function add_checked($inputName, $setting) {
 * masters
 *
 */
-
+//create
 //productname
 
 $( function() {
@@ -131,3 +131,13 @@ function tooltip(){
 
 	});
 }*/
+
+
+$(function(){
+	$('#smileAllCheck_button').on('click', function(){
+		$('.smileCheck').each(function(){
+			$(this).prop('checked', true);
+		});
+	});
+});
+
