@@ -27,7 +27,7 @@
 					<div class="well">
 						<h4>登録フォーマット</h4>
 						<p>スマイルへ登録するための基本フォーマットをダウンロードします。</p>
-						<a href="{{ asset('storage/master/product/format/product_format_ver01.xlsm') }}" class="btn btn-primary">ダウンロード</a>
+						<a href="{{ 'public/'.asset('storage/master/product/format/product_format_ver01.xlsm') }}" class="btn btn-primary">ダウンロード</a>
 					</div>
 					<h4>ファイルアップロード</h4>
 					<form action="{{ url('masters/products/batch') }}" method="POST" enctype="multipart/form-data" class="form-inline">
