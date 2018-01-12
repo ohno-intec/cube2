@@ -74,7 +74,7 @@
 					<?php $current_user = Auth::user() ;?>
 					@if($current_user->id == 3 || $current_user->id == 4)
 						<input type="button" value="未登録の全てにチェック" id="smileAllCheck_button">
-						<input type="button" value="未登録の全てにチェック" id="">
+						<input type="button" value="チェックした商品を登録" id="smileupdate_button">
 					@endif
 				</th>
 				<th>スマイル登録状況のコメント</th>
@@ -172,9 +172,9 @@
 					var smile_checkbox;	//
 					var smile_button = document.getElementById("smileupdate_button");
 
-					var object = {};
-					var check_array = new Array();
-					var check_array2 = new Object();
+					//var object = {};
+					var checkData = new Array();
+					var addData = new Array();
 			
 					smile_button.addEventListener("click", function(){
 						var jsondata = {};
@@ -182,31 +182,27 @@
 
 						for ( var i = 0; i < smile_checkbox.length; i++){
 							if(smile_checkbox[i].checked == true){
-								check_array = {id: smile_checkbox[i].getAttribute("data-id"), check: smile_checkbox[i].checked};
-
-								check_array2.push(check_array);
-
+								addData = {id: smile_checkbox[i].getAttribute("data-id"), check: smile_checkbox[i].checked};
 								jsondata['id'] = smile_checkbox[i].getAttribute("data-id");
 								jsondata['check'] = smile_checkbox[i].checked;
-								object.items.push[jsondata];
+								//object.items.push(jsondata);
+								checkData.push(addData);
 							}
 						}
-
-						console.log(check_array2);
-
-						var xhr = new XMLHttpRequest();
-						xhr.open('POST', 'masters/products/smilecompleteall', true);
-						xhr.setRequestHeader("Content-type", "application/json");
-						xhr.send(JSON.stringify(jsondata));
+						JSON.parse(JSON.stringify(checkData))
 						
+						console.log(checkData);
+						var xhr = new XMLHttpRequest();
+						xhr.open('POST', '{{ url('masters/products/smilecompleteall') }}' );
+						xhr.addEventListener("progress", function(){　console.log('connecting');　});
+						xhr.addEventListener("load", function(){ console.log('success'); });
+						xhr.addEventListener("error", function(){ console.log('fail');　});
+						xhr.addEventListener("abort", function(){ console.log('cance');　});
+						xhr.setRequestHeader("Content-type", "application/json");
+						xhr.send(checkData);
+						console.log(xhr.statusText);
 
 					}, false);
-
-
-
-
-
-
 				})();
 			</script>
 @endsection('content')

@@ -77,7 +77,7 @@ class ProductsController extends Controller
         return redirect()->to('masters/products');
     }
 
-    public function smilecomplete_all(Request $request)
+    public function smilecompleteall(Request $request)
     {
         /*
         *
@@ -86,7 +86,9 @@ class ProductsController extends Controller
         */
 
         //$data = Product::find($request->);
-        $smilecomplete_all = $request;
+        $data = json_decode($request);
+
+        dd(print_r($data));
 
 
 
@@ -326,43 +328,22 @@ class ProductsController extends Controller
                 }
 
                 //商品コード、商品名、索引を設定
-                //ひとまずbrand_idから新しいproduct_codeを取得
+                //brand_idから新しいproduct_codeを取得
                 $new_product_code = getProductCode($brand_id);//現在商品コードの最大値プラス1
-                //debug# echo "<br>DBからproduct_codeを取得しました。</br>new_product_codeは【".$new_product_code."】です。";
-
-                //CSV内に同ブランドが複数存在する場合の処理 9/26ここが処理できていいない
-                //$records内のブランドコードを検索して2個目以降からは+1してからproduct_codeを設定する？？
-                //$new_product_codeが$records内に存在するかチェック array_keys
 
                 $bool = False; //デフォルトをFalseにする→次のチェックで商品コードがまだ存在していなければFalseのまま
                 //新規商品コードが$records内にあるかチェック
-                //debug# echo "<br>キー".$key."、商品".$line[3]."について処理を開始します。";
                 $n = 0;
                 foreach($records as $checkKey => $value){
                     $n += 1;
-                    //debug# echo "<br>".$n."回目の商品コード存在チェック";
-                    //debug# echo "<br>-----新規商品コードの存在チェックここから------<br>";
-                    //debug# echo "records内の商品コード有無をチェックします。<br>";
-                    //debug# echo "keyの確認".$key."と".$checkKey."です。<br>";
                     if($new_product_code == $value[0] && $key == $checkKey){    //in_array($new_product_code, $value)
-                        //debug# echo "records内に商品コードが存在します<br>";
-                        //debug# echo "keyの確認".$key."と".$checkKey."です。商品は".$value[3]."です。<br>";
-                        //debug# echo "<br>".$value[3]."<br>";
                         $bool = True;
-                        //debug# echo "<br>product_code_arrayを出力します<br>";
-                        //debug# print_r($product_code_array);
                         if(empty($product_code_array)){
                             $product_code_array[] = $value[0];
                         }else{
-                            //debug# echo "<br>product_code_arrayにプッシュします。1<br>";
                             $product_code_array[] = max($product_code_array) + 1;
                         }
                     }elseif($value[0] !== "" && $key == $checkKey){
-                        //debug# echo "records内の指定商品コードと一致しました。<br>";
-                        //debug# echo "keyの確認".$key."と".$checkKey."です。商品は".$value[3]."です。<br>";
-                        //debug# echo "指定商品コードは".$value[0]."です。<br>";
-
-                        //debug# echo "<br>product_code_arrayにプッシュします。2<br>";
                         $product_code_array[] = $value[0];
                         $bool = true;
                     }elseif($value[0] == "" && $key == $checkKey && in_array($new_product_code, $product_code_array)){
@@ -374,60 +355,37 @@ class ProductsController extends Controller
                                 break;
                             }
                         }
-                        //debug# echo "<br>product_code_arrayにプッシュします。3<br>";
                         $product_code_array[] = $new_product_code;
                         $bool = true;
 
                     }else{
-                            //debug# echo "商品コードは一致しません。<br>";
-                            //debug# echo "keyの確認".$key."と".$checkKey."です。商品は".$value[3]."です。<br>";
                     }
-                    //debug# echo "<br>-----新規商品コードの存在チェックここまで------<br>";
                 }
 
                 //getProductCodeで取得した商品コードがすでに存在する場合は新たに商品コードを生成
-                //debug# echo "<br>recordsに商品コードが存在するかどうかのboolean:".$bool."<br>";
                 if($bool){
                     //配列内に存在していた場合、array_keysの戻り値のkeyの最大値を取得して$new_product_codeに加算
-                    //debug# echo "<pre>";
-                    //debug# echo print_r($product_code_array);
-                    //debug# echo "</pre>";
                     if($line[1] == 0){ //11/1追加
-                        //debug# echo "管理系コードの場合";
                         $new_product_code = $new_product_code + max(array_keys($product_code_array));
-                        //debug# echo "<br>新たに商品コードを設定しました<br>".$new_product_code;
                     }else{
-                        //debug# echo "商品系コードの場合</br></br>";
-
                         if(!empty($line[0])){ //CSVファイルに商品コードが指定されていた場合
-                            //debug# echo "<br>CSVファイルに商品コードが指定されています。<br>";
                             $new_product_code = $line[0];
                             $designation_code = true;
                         }else{
-
                             $designation_code = false;
-                            //$new_product_code = $new_product_code + max(array_keys($product_code_array)) + 1;
                         }
                     }
                 }else{
-                    //debug# echo "records内に商品コードが存在しないのでproduct_code_arrayを初期化します</br></br>";
                     $product_code_array = array();
-                    //debug# echo "最初のブランド行です。product_code_arrayを設定します";
-                    //debug# echo "<br>product_code_arrayにプッシュします。5<br>";
                     $product_code_array[] = $new_product_code;
                 }
-
                 $product_name = $brand_record->brand_name . " " . $line[3];   //商品名を確定
 
                 if(strlen( mb_convert_encoding($product_name, 'SJIS', 'UTF-8') ) > 36){
-
                     $product_name_lencheck[] = $product_name;
-
                 }
 
                 $product_index = substr(mb_strtolower($line[3]), 0, 10);   //型番を小文字にする
-
-
                 //要素が空の場合、nullに変換 これをやらないとDB insert時にエラー
                 foreach($line as $key2 => $line2){
                     if($line2 == ""){
@@ -448,8 +406,6 @@ class ProductsController extends Controller
                 
                 $line = array_replace($line, $replacements);
                 $records = array_replace($records, array($key => $line));
-
-
                 /*
                 array(
                     [0] => array( $key
@@ -495,7 +451,6 @@ class ProductsController extends Controller
                 )
                 */
                 //データ型のチェック
-
                 if(!is_numeric($line[0]) && !empty($line[0])){
                     $dataTypeCheckArray[] = $line[0];
                 }elseif(!is_numeric($line[1]) && !empty($line[1])){
@@ -558,27 +513,15 @@ class ProductsController extends Controller
                 }
                $dataTypeCheckArray = array();
             }
-
             if(isset($product_name_lencheck)){
                 return redirect('/masters/products/management')->with('product_name_lencheck', '商品名が長すぎます。')->with('product_name_lencheck_array', $product_name_lencheck);
             }
-
             if(!empty($dataTypeCheckArray)){
                 $dataTypeCheck = array_combine($key_names, $dataTypeCheck);
             }
-            /*
-            try{
-                if(isset($dataTypeCheck)){
-                }
-            }catch(\Exception $e){
-                redirect('masters/products/management')->with('data_type_error', $e)->with('data_type_error_array', $dataTypeCheckArray);
-            }*/
-
             if(isset($dataTypeCheck)){
                 return redirect('/masters/products/management')->with('data_type_error', 'データ型に誤りがあります。')->with('data_type_error_array', $dataTypeCheck);
             }
-
-
             //$user_idの追加処理
             $user_id = Auth::id();
 
@@ -626,9 +569,7 @@ class ProductsController extends Controller
             }
             catch(\Exception $e) {
                 DB::rollback();
-
                 dd($e);
-
                 //$eArray = (array)$e;
                 $eArray = json_decode(json_encode($e), true);
                 //dd($eArray);
@@ -638,19 +579,13 @@ class ProductsController extends Controller
         }else{ //拡張子がcsvじゃない場合
             return redirect('masters/products/management')->with('file_type_error', '無効なファイルが送信されました。ファイル形式を確認してください。');
         }
-
         $data = Product::select('product_code', 'product_name', 'product_modelnumber', 'product_name')->get();
         csvoutput('products', $data);
-
     }
 
     public function batchfile_download(Request $request){
-
         $products = Product::where('product_smileregistration', '=', '新規未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
-
-
         //$productsをforeachで回してデータを修正
-
         $itemname = array(
             'product_code' => "商品ｺｰﾄﾞ",
             'product_name' => "商品名",
@@ -689,32 +624,22 @@ class ProductsController extends Controller
         );
         //ダウンロードファイル用の項目名を設定
         $data[] = $itemname;
-
-
-
         foreach($products as $key => $value){
-
             $supplier_id = $value['supplier_id'];
             $category_id = $value['category_id'];
-
             //supplier_idから仕入先コード取得
-            //$supplier_record = DB::table('suppliers')->where('supplier_code', $supplier_code)->first();
             if(!is_null($supplier_id)){
                 $supplier = Supplier::where('id', '=', $supplier_id)->first();
                 $supplier_code = $supplier->supplier_code;
                 $supplier_name = $supplier->supplier_name;
             }
-
             //category_idからカテゴリーコード取得
             if(!is_null($category_id)){
                 $category = Category::where('id', '=', $category_id)->first();
                 $category_code = $category->category_code;
                 $category_name = $category->category_name;
             }
-
-
             //$replace = array();
-
             $data[] = array(
                 'product_code' => $value['product_code'],
                 'product_name' => $value['product_name'],
@@ -755,12 +680,9 @@ class ProductsController extends Controller
         }
 
         //新規CSVファイル生成
-
         $file_name = 'smile_newproducts_reg_'.time().'.txt'; //CSVにする場合は拡張子変更
         $file_handler = storage_path().'/smile';
-
         $txtfile = fopen($file_handler.'/'.$file_name, "w");
-
         if($txtfile){
             foreach($data as $value){
                 mb_convert_variables('SJIS-win','UTF-8', $value);
@@ -769,16 +691,12 @@ class ProductsController extends Controller
                     fwrite($txtfile, $string."\t");
                 }
                 fwrite($txtfile, "\n");
-
             }
         }
         fclose($txtfile);
-
         //ダウンロードURLを戻す
         $headers = ['Content-Type' => 'text/csv'];
         return Response::download($file_handler.'/'.$file_name, $file_name, $headers);
-        //return redirect('masters/products')->with('download_path', $file_handler.'\\'.$file_name)->with('file_name', $file_name);
-
     }
 
 
@@ -788,6 +706,7 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    
     public function show(Product $product)
     {
         //

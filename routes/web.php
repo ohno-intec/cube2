@@ -25,7 +25,7 @@ Route::get('/', 'PagesController@index');
 
 Route::get ( '/master/', 'PagesController@master' );
 
-Route::get ('/masters/products/management', 'PagesController@productsmanagement')->name('products.management');
+Route::get ('/masters/products/management', 'PagesController@productsManagement')->name('products.management');
 
 
 //暗黙
@@ -45,7 +45,7 @@ Route::post('masters/products/batch', 'Masters\ProductsController@batch');
 Route::post('masters/products/batch_update', 'Masters\ProductsController@batch_update');
 Route::post('masters/products/batchfile_download', 'Masters\ProductsController@batchfile_download');
 Route::post('masters/products/smilecomplete', 'Masters\ProductsController@smilecomplete');
-
+Route::post('masters/products/smilecompleteall', 'Masters\ProductsController@smilecompleteall');
 
 
 /*

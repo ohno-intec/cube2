@@ -38,7 +38,8 @@ class PagesController extends Controller {
 
 	}
 
-    public function productsmanagement() {
+    public function productsManagement() {
+
 
         return view('masters.products.management');
 
