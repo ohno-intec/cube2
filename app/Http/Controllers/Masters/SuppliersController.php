@@ -131,7 +131,7 @@ class SuppliersController extends Controller
 												'supplier_address1' => $line[4],
 												'supplier_address2' => $line[5],
 												'supplier_address3' => $line[6],
-												'supplier_fax' => $line[7],
+												'supplier_tel' => $line[7],
 												'supplier_fax' => $line[8],
 												'supplier_email' => $line[9],
 												'supplier_salerep' => $line[10],
