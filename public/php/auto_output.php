@@ -1,6 +1,6 @@
 <?php
 require('dbc.php');
-require('http://'.$_SERVER['HTTP_HOST'].'/vendor/laravel/framework/src/Illuminate/Support/helpers.php');
+require($_SERVER['DOCUMENT_ROOT'].'\vendor\laravel\framework\src\Illuminate\Support\helpers.php');
 $link = DBC();
 if(mysql_connect_errno()){
 	printf("connect failed: %s\n", mysqli_connect_error());
