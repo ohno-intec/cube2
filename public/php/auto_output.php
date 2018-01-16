@@ -1,17 +1,11 @@
 <?php
-
 require('dbc.php');
-
 $link = dbc;
 if(mysql_connect_errno()){
 	printf("connect failed: %s\n", mysqli_connect_error());
 	exit();
 }
-
-
-
 //define csv file information
-
 $file_path = /home/intec/cube2/;
 $file_name = products.csv;
 $export_csv_title = ["product", "product_name"];
@@ -35,3 +29,5 @@ $file = fopen($file_name, 'W');
 fputscsv($file, $export_csv_title, ',')
 fputscsv($file, (array)$results, ',');
 fclose($file)
+
+?>
