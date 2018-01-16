@@ -46,6 +46,7 @@ Route::post('masters/products/batch_update', 'Masters\ProductsController@batch_u
 Route::post('masters/products/batchfile_download', 'Masters\ProductsController@batchfile_download');
 Route::post('masters/products/smilecomplete', 'Masters\ProductsController@smilecomplete');
 Route::post('masters/products/smilecompleteall', 'Masters\ProductsController@smilecompleteall');
+Route::get('masters/auto_output', 'Masters\ProductsController@auto_output');
 
 
 /*

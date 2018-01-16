@@ -1,5 +1,8 @@
 <?php
+
+///usr/bin/php7.1 /home/intec/cube2/public/php/auto_output.php 
 require('dbc.php');
+echo $_SERVER['DOCUMENT_ROOT'];
 require($_SERVER['DOCUMENT_ROOT'].'/vendor/laravel/framework/src/Illuminate/Support/helpers.php');
 $link = DBC();
 if(mysql_connect_errno()){
