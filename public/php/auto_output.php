@@ -1,13 +1,13 @@
 <?php
 require('dbc.php');
-$link = dbc;
+$link = DBC();
 if(mysql_connect_errno()){
 	printf("connect failed: %s\n", mysqli_connect_error());
 	exit();
 }
 //define csv file information
-$file_path = /home/intec/cube2/;
-$file_name = products.csv;
+$file_path = '/home/intec/cube2/';
+$file_name = 'products.csv';
 $export_csv_title = ["product", "product_name"];
 $sql = "SELECT product_code,product_name FROM products";
 
