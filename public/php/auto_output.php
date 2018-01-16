@@ -26,8 +26,8 @@ if($results = mysqli_query($link, $sql)){
 mysqli_close($link);
 
 $file = fopen($file_name, 'W');
-fputscsv($file, $export_csv_title, ',')
-fputscsv($file, (array)$results, ',');
+fputcsv($file, $export_csv_title, ',')
+fputcsv($file, (array)$results, ',');
 fclose($file)
 
 ?>
