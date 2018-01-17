@@ -788,7 +788,7 @@ class ProductsController extends Controller
         $file = fopen($file_name, 'W');
         fputcsv($file, $export_csv_title, ',');
         fputcsv($file, (array)$results, ',');
-        fclose($file)
+        fclose($file);
     }
 
 
