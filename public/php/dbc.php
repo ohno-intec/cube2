@@ -1,5 +1,6 @@
 <?php
 function DBC(){
+	require_once('http://'.$_SERVER['HTTP_HOST'].'/vendor/laravel/framework/src/Illuminate/Support/helpers.php');
     $server_name = $_SERVER['SERVER_NAME'];
     if($server_name == env("LOCALHOST")){
         return mysqli_connect(env("LOCALHOST"), env("LOCAL_DB_USER"), env("LOCAL_DB_PASSWORD") ,env("LOCAL_DB_NAME"));

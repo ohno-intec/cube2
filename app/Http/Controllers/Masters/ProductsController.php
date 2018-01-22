@@ -26,7 +26,6 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
     protected $product;
 
     public function __construct(Product $product){
@@ -46,7 +45,6 @@ class ProductsController extends Controller
     }
 
     public function search(Request $request){   //ajaxの場合は引数を$kewordにする
-
         $keyword = $request->input('keyword');
         $products = DB::table('products')->where('product_name', 'like', "%{$keyword}%")->orderBy('created_at','desc')->paginate(50);
         //header('Content-Type: application/json');
@@ -63,7 +61,6 @@ class ProductsController extends Controller
     }
 
     public function smilecomplete(Request $request){
-
         /*
         *
         *
@@ -157,6 +154,7 @@ class ProductsController extends Controller
             $records = array();
             $line = array();
 
+            /*
             function getProductCode($brand_id){
                 $link = dbc();
                 //ブランドテーブルからブランドコードを取得
@@ -195,6 +193,7 @@ class ProductsController extends Controller
                 }
                 //debug# echo "getProductCodeが終わりました";
             }
+            */
 
             foreach($csvFile as $line_key => $line){
                 foreach($line as $key => $value){

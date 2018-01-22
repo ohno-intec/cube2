@@ -21,15 +21,16 @@
 					@endforeach
 				</select>
 			</div>
+
 			<script type="text/javascript">
 
 				$("select[name=brand_id]").change(function(){
 					$brand_id = $(this).val();
 					$.ajax({
-						type:"POST",
-						url: "{{ asset('/php/getBrandCode.php') }}",
-						dataType:"text",
-						data: { "brand_id" : $brand_id}
+						type:　"GET",
+						url: "{{ url('masters/get_product_code') }}",
+						data: { "brand_id" : $brand_id },
+						dataType:"text"
 					}).done(function($new_product_code){
 						console.log($new_product_code);
 						$('input[name=product_code]').val($new_product_code);

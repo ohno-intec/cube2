@@ -39,6 +39,11 @@ Route::resource('masters/categories', 'Masters\CategoriesController');
 Route::post('masters/categories/batch', 'Masters\CategoriesController@batch');
 
 Route::resource('masters/products', 'Masters\ProductsController');
+Route::get('/masters/get_product_code', function(){
+	$brand_id = $_GET['brand_id'];
+	return getProductCode($brand_id);
+})->middleware('auth');
+
 Route::post ('masters/products/search', 'Masters\ProductsController@search')->name('products.search');//ajaxの場合は第一引数の末尾に{keyword?}を付ける
 //Route::get ('masters/products/management', 'Masters\ProductsController@management')->name('products.management');
 Route::post('masters/products/batch', 'Masters\ProductsController@batch');

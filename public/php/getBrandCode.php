@@ -16,9 +16,10 @@ require_once('dbc.php');
 if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 	$brand_id = $_POST['brand_id'];
+
 	$link = DBC();
 	//ブランドテーブルからブランドコードを取得
-	$sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
+	$sqlQuery = "SELECT brand_code FROM brands WHERE id = $brand_id";
 	$result = mysqli_query($link, $sqlQuery);
 	#$result = DB::select("SELECT brand_code FROM brands WHERE id=$brand_id");
 	$brand_code = mysqli_fetch_assoc($result);
@@ -62,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 }
 
 
-function getBrandCode($brand_id){
+function getBrandCode_old($brand_id){
 	$link = DBC();
 	//ブランドテーブルからブランドコードを取得
 	$sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
@@ -82,7 +83,6 @@ function getBrandCode($brand_id){
         $new_product_code = $product_code + 1;  //rowが1以上の場合は最大値+1の値を採番
         return $new_product_code;
     }	
-
 }
 
 ?>
