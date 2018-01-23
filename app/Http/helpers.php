@@ -73,7 +73,8 @@ if(!function_exists('fm_slack')){ // fm_slack = free message to slack
         $slackApikey = env('SLACK_API_KEY');
         $text = $message;
         $text = urlencode($text);
-        $url = "https://slack.com/api/chat.postMessage?token=".$slackApikey."&channel=%23general&text=".$text."&as_user=true";
+        $channel = ($_SERVER['SERVER_NAME'] == "dev-cube2") ? "dev-cube2" : "general" ;
+        $url = "https://slack.com/api/chat.postMessage?token=".$slackApikey."&channel=%23".$channel."&text=".$text."&as_user=true";
         file_get_contents($url);
     }
 
