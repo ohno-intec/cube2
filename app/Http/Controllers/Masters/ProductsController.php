@@ -56,6 +56,8 @@ class ProductsController extends Controller
 
     public function management()
     {
+
+        //
         return redirect()->to('masters/products/management');
         //return view('masters.products.management');
     }

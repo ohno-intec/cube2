@@ -94,6 +94,11 @@
 							{{ session('brand_id_error') }}
 						</div>
 					@endif
+					<div class="well">
+						<h4>最近一括登録されたファイル</h4>
+						<p>最近一括登録されたテキストファイルをダウンロードできます。</p>
+						<a href="{{ asset('storage/master/product/format/product_format_ver01.xlsm') }}" class="btn btn-primary">ダウンロード</a>
+					</div>
 				</div>
 			</div>
 		</div>
