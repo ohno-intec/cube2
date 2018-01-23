@@ -115,6 +115,10 @@ class ProductsController extends Controller
     {
         //
 
+        //現在認証されているユーザーの取得
+        $user = Auth::user();
+        $user_name = $user->name;
+
         $data = $request->all();
 
         //$user_idの追加処理
@@ -129,13 +133,18 @@ class ProductsController extends Controller
         $data = Product::select('product_code', 'product_name', 'product_modelnumber', 'product_name')->get();
         csvoutput('product', $data);
         */
-        return redirect()->to('masters/products');
 
+        fm_slack($user_name.'さんから個別に商品が登録されました!');
+        return redirect()->to('masters/products');
     }
 
 
     public function batch(Request $request)
     {
+        //現在認証されているユーザーの取得
+        $user = Auth::user();
+        $user_name = $user->name;
+
         //ファイルを受け取り
         $file = Input::file('data-file');
         $file_name = $file->getClientOriginalName();
@@ -153,47 +162,6 @@ class ProductsController extends Controller
 
             $records = array();
             $line = array();
-
-            /*
-            function getProductCode($brand_id){
-                $link = dbc();
-                //ブランドテーブルからブランドコードを取得
-                $sqlQuery = "SELECT brand_code FROM brands WHERE id=$brand_id";
-                $result = mysqli_query($link, $sqlQuery);
-                $brand_code = mysqli_fetch_assoc($result);
-                $brand_code = $brand_code['brand_code']; //get brand_code
-                //debug# echo "getProductCodeの中:".$brand_code;
-                //プロダクトテーブルからブランドコードを検索し、その中のプロダクトコードが最大値のものを取得
-                if($brand_code == 0){   //管理系コードの場合
-                    //debug# cho "管理系コード<br />";
-                    $sqlQuery = "SELECT max(product_code) FROM products WHERE product_code <= 9999";
-                }else{  //商品系コードの場合
-                    //debug# echo "商品系コード<br />";
-                    $sqlQuery = "SELECT max(product_code) FROM products WHERE $brand_code = LEFT(product_code,char_length(product_code)-4)";
-                }
-                $result = mysqli_query($link, $sqlQuery);
-                $product_code = mysqli_fetch_assoc($result);
-                $product_code = $product_code['max(product_code)'];
-                //print_r($product_code);
-                if(empty($product_code)){
-                    //debug# echo "商品コードは空<br />";
-                    if($brand_code == 0){
-                        //debug# echo "管理系コード";
-                        $new_product_code = 1;//rowが0の場合は1を採番
-                        return $new_product_code;
-                    }else{
-                        //debug# echo "商品系コード<br />";
-                        $new_product_code = $brand_code . '0001';//rowが0の場合は0001を採番
-                        return $new_product_code;
-                    }
-                }else{
-                    //debug# echo "商品コードは存在<br />";
-                    $new_product_code = $product_code + 1;  //rowが1以上の場合は最大値+1の値を採番
-                    return $new_product_code;
-                }
-                //debug# echo "getProductCodeが終わりました";
-            }
-            */
 
             foreach($csvFile as $line_key => $line){
                 foreach($line as $key => $value){
@@ -226,6 +194,7 @@ class ProductsController extends Controller
                 $brand_record = DB::table('brands')->where('brand_code', $brand_code)->first();
 
                 if(is_null($brand_record)){
+                    fm_slack($user_name.'さんが商品を一括登録しようとしましたが、ブランドが登録されていなかったようです。');
                     return redirect('masters/products/management')->with('brand_id_error', 'ブランドIDが見つかりません。ブランドマスタにブランドが登録されているか、もしくはブランドコードが正しいか確認してください。');
                 }
 
@@ -241,6 +210,7 @@ class ProductsController extends Controller
                 $name_count = 0;
             }
             if($error_count > 0){
+                fm_slack($user_name.'さんが商品を一括登録しようとしましたが、重複登録があったようです。');
                 return redirect('/masters/products/management')->with('duplication', '重複登録が' . $error_count.'件あります。ファイルを修正して再度アップロードしてください。')->with('duplication_message', $error_message);
             }
 
@@ -303,6 +273,7 @@ class ProductsController extends Controller
 
                 //if(isset($brand_code){}
                 if(is_null($brand_record)){
+                    fm_slack($user_name.'商品を一括登録しようとしましたが、ブランドが登録されていなかったようです。');
                     return redirect('masters/products/management')->with('brand_id_error', 'ブランドIDが見つかりません。ブランドマスタにブランドが登録されているか、もしくはブランドコードが正しいか確認してください。');
                 }else{
                     $brand_id = $brand_record->id;
@@ -513,12 +484,14 @@ class ProductsController extends Controller
                $dataTypeCheckArray = array();
             }
             if(isset($product_name_lencheck)){
+                fm_slack($user_name.'商品を一括登録しようとしましたが、商品名が長すぎたようです。');
                 return redirect('/masters/products/management')->with('product_name_lencheck', '商品名が長すぎます。')->with('product_name_lencheck_array', $product_name_lencheck);
             }
             if(!empty($dataTypeCheckArray)){
                 $dataTypeCheck = array_combine($key_names, $dataTypeCheck);
             }
             if(isset($dataTypeCheck)){
+                fm_slack($user_name.'商品を一括登録しようとしましたが、データ型に誤りがあったようです。');
                 return redirect('/masters/products/management')->with('data_type_error', 'データ型に誤りがあります。')->with('data_type_error_array', $dataTypeCheck);
             }
             //$user_idの追加処理
@@ -572,10 +545,13 @@ class ProductsController extends Controller
                 //$eArray = (array)$e;
                 $eArray = json_decode(json_encode($e), true);
                 //dd($eArray);
+                fm_slack($user_name.'が商品一括登録中にエラーが発生しました。'.$eArray);
                 return redirect('masters/products/management')->with('exception_error', '登録中にエラーが発生しました。エラーメッセージを確認してください。')->with('exception_message', $eArray);
             }
+            fm_slack($user_name.'から商品が一括登録されました!');
             return redirect('masters/products/management')->with('success_message', '成功しました。');
         }else{ //拡張子がcsvじゃない場合
+            fm_slack($user_name.'が商品を一括登録しようとしましたが、拡張子を間違えて失敗しました。');
             return redirect('masters/products/management')->with('file_type_error', '無効なファイルが送信されました。ファイル形式を確認してください。');
         }
         $data = Product::select('product_code', 'product_name', 'product_modelnumber', 'product_name')->get();

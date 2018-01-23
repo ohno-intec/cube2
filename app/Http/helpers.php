@@ -35,14 +35,14 @@ if(! function_exists('getProductCode')) {
         //ブランドテーブルからブランドコードを取得
         $brand_code = DB::table('brands')->where('id', $brand_id)->value('brand_code');
         if($brand_code == 0){   //管理系コードの場合
-            $product_code = DB::table('products')->where('product_code', '<=', '9998')->max('product_code'); //9999はスポットコードのため
+            $product_code = DB::table('products')->where('product_code', '<=', '9989')->max('product_code'); //9999はスポットコードのため
         }else{  //商品系コードの場合
             //プロダクツテーブルでプロダクトコードの左3桁とブランドコードが一致する中の最大のプロダクトコード
             //$product_code = DB::table('products')->orWhere(DB::raw('LEFT(product_code, char_length(product_code)-4)'), '=', $brand_code)->orWhere('product_code', '<=', '9998');
             //$sqlQuery = "SELECT max(product_code) FROM products WHERE $brand_code = LEFT(product_code, char_length(product_code)-4)";
             //$product_code = DB::table('products')->where('brand_id', '=', $brand_id)->where(RIGHT('product_code, 4'), '<=', '9998')->max('product_code');
             
-            $product_code = DB::table('products')->where('brand_id', '=', $brand_id)->where(DB::raw('RIGHT(product_code, 4)'), '<=', '9997')->max('product_code');
+            $product_code = DB::table('products')->where('brand_id', '=', $brand_id)->where(DB::raw('RIGHT(product_code, 4)'), '<=', '9989')->max('product_code');
 
         }
         //print_r($product_code);
@@ -64,5 +64,17 @@ if(! function_exists('getProductCode')) {
         }
     }
 
+
+}
+
+if(!function_exists('fm_slack')){ // fm_slack = free message to slack
+
+    function fm_slack($message = "何かアクションが起こりましたが、メッセージが含まれていません。"){
+        $slackApikey = env('SLACK_API_KEY');
+        $text = $message;
+        $text = urlencode($text);
+        $url = "https://slack.com/api/chat.postMessage?token=".$slackApikey."&channel=%23general&text=".$text."&as_user=true";
+        file_get_contents($url);
+    }
 
 }
