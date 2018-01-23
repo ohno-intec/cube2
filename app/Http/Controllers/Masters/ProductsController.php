@@ -124,8 +124,8 @@ class ProductsController extends Controller
         $data = $request->all();
 
         //$user_idの追加処理
-            $user_id = Auth::id();
-            $data['user_id'] = $user_id;
+         $user_id = Auth::id();
+         $data['user_id'] = $user_id;
 
         $this->product->fill($data);
         $this->product->save();
@@ -722,10 +722,13 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        $user = Auth::user();
+        $user_name = $user->name;
         //
         $data = $request->all();
         $product->fill($data);
         $product->save();
+        fm_slack($user_name.'さんが商品情報を更新しました。');
         return redirect()->to('masters/products');
 
     }
