@@ -131,11 +131,6 @@ class ProductsController extends Controller
         $this->product->save();
         //Mail::to($request->user())->send("新規商品登録依頼");
 
-        /*
-        $data = Product::select('product_code', 'product_name', 'product_modelnumber', 'product_name')->get();
-        csvoutput('product', $data);
-        */
-
         fm_slack($user_name.'さんから個別に商品が登録されました!');
         return redirect()->to('masters/products');
     }
@@ -157,7 +152,6 @@ class ProductsController extends Controller
             //ファイル名を変更して移動
             $file_name = preg_replace("/\.csv$/i", "", $file_name) . "_" . 'products' . '_' .time() . '.csv';
             $file_path = $file->move(storage_path().'/upload', $file_name);
-
             $csvFile = new \SplFileObject($file_path);
             $csvFile->setFlags(\SplFileObject::READ_CSV);
             $csvFile->setCsvControl(',');
@@ -301,7 +295,7 @@ class ProductsController extends Controller
 
                 //商品コード、商品名、索引を設定
                 //brand_idから新しいproduct_codeを取得
-                $new_product_code = getProductCode($brand_id);//現在商品コードの最大値プラス1
+                $new_product_code = getProductCode($brand_id); // 現在商品コードの最大値プラス1
 
                 $bool = False; //デフォルトをFalseにする→次のチェックで商品コードがまだ存在していなければFalseのまま
                 //新規商品コードが$records内にあるかチェック
@@ -504,7 +498,6 @@ class ProductsController extends Controller
            //dd(print_r($user_id));
             try {
             DB::beginTransaction();
-
                 foreach($records as $line){
                     DB::table('products')->insert(['brand_id' => $line[1], //brand_codeからｂbrands DBを検索してbrand_idを取得
                                                    'product_code' => $line[0], //brand_codeでproducts DBを検索して、範囲内の最大値+1を取得 同じブランドがあった場合は増えるごとにプラス1する
@@ -551,13 +544,15 @@ class ProductsController extends Controller
                 return redirect('masters/products/management')->with('exception_error', '登録中にエラーが発生しました。エラーメッセージを確認してください。')->with('exception_message', $eArray);
             }
             fm_slack($user_name.'から商品が一括登録されました!');
+            //$data = Product::select('product_code', 'product_name', 'product_modelnumber', 'product_name')->get();
+
+            $data = $records;
+            csvoutput('new_products'.date('ymdHis').'_', $data);
             return redirect('masters/products/management')->with('success_message', '成功しました。');
         }else{ //拡張子がcsvじゃない場合
             fm_slack($user_name.'が商品を一括登録しようとしましたが、拡張子を間違えて失敗しました。');
             return redirect('masters/products/management')->with('file_type_error', '無効なファイルが送信されました。ファイル形式を確認してください。');
         }
-        $data = Product::select('product_code', 'product_name', 'product_modelnumber', 'product_name')->get();
-        csvoutput('products', $data);
     }
 
     public function batchfile_download(Request $request){

@@ -139,5 +139,20 @@ $(function(){
 			$(this).prop('checked', true);
 		});
 	});
+
+	$('#smileupdate_button').on('click', function(){
+		var checked = $('.smileCheck').prop('checked', true);
+		$.ajax({
+			url:'',
+			type:'POST',
+			data:{
+
+			}
+		}).done(function(data){
+
+		}).fail(function(data){
+
+		});
+	});
 });
 
