@@ -303,7 +303,7 @@ class ProductsController extends Controller
                 foreach($records as $checkKey => $value){
                     $n += 1;
                     if($new_product_code == $value[0] && $key == $checkKey){    //in_array($new_product_code, $value)
-                        $bool = True;
+                        $bool = true;
                         if(empty($product_code_array)){
                             $product_code_array[] = $value[0];
                         }else{
@@ -313,7 +313,6 @@ class ProductsController extends Controller
                         $product_code_array[] = $value[0];
                         $bool = true;
                     }elseif($value[0] == "" && $key == $checkKey && in_array($new_product_code, $product_code_array)){
-                        
                         $counta = count($product_code_array);
                         for($i=0; $i<$counta; $i++){
                             $new_product_code += 1;
@@ -323,15 +322,15 @@ class ProductsController extends Controller
                         }
                         $product_code_array[] = $new_product_code;
                         $bool = true;
-
                     }else{
+
                     }
                 }
 
                 //getProductCodeで取得した商品コードがすでに存在する場合は新たに商品コードを生成
                 if($bool){
                     //配列内に存在していた場合、array_keysの戻り値のkeyの最大値を取得して$new_product_codeに加算
-                    if($line[1] == 0){ //11/1追加
+                    if($line[1] == 0){
                         $new_product_code = $new_product_code + max(array_keys($product_code_array));
                     }else{
                         if(!empty($line[0])){ //CSVファイルに商品コードが指定されていた場合
@@ -342,6 +341,7 @@ class ProductsController extends Controller
                         }
                     }
                 }else{
+                    $designation_code = false;
                     $product_code_array = array();
                     $product_code_array[] = $new_product_code;
                 }
