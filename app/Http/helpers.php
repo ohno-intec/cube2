@@ -67,6 +67,7 @@ if(! function_exists('getProductCode')) {
 
 }
 
+
 if(!function_exists('fm_slack')){ // fm_slack = free message to slack
 
     function fm_slack($message = "何かアクションが起こりましたが、メッセージが含まれていません。"){

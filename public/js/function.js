@@ -156,3 +156,29 @@ $(function(){
 	});
 });
 
+/*
+$(function(){
+	var nav = $(".navbar");
+	$(window).on("load scroll", function(){
+		if($(this).scrollTop() > 300　&& nav.hasClass('navbar-fixed-top') == false){
+			nav.css("top", "-"+nav.height());
+			nav.addClass('navbar-fixed-top');
+			$("body").css("padding-top", nav.height());
+			nav.animate({top: 0}, 300);
+
+    	}else if($(this).scrollTop() < 300 && nav.hasClass('navbar-fixed-top') == true){
+			nav.animate({top: "-"+nav.height()}, 300, function(){
+				nav.css("top", 0);
+			});
+			nav.removeClass('navbar-fixed-top');
+			$("body").css("padding-top", "");		
+			if($(this).scrollTop() < nav.height()){
+
+
+	
+			}
+		}
+
+		});
+});
+*/
