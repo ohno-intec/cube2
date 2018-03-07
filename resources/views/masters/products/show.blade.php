@@ -15,6 +15,8 @@
 			</form>
 		</li>
 	</ul>
+	<pre>
+	</pre>
 	<table class="table table-striped">
 		<tr>
 			<th>商品コード</th>
@@ -62,23 +64,23 @@
 		</tr>
 		<tr>
 			<th>新単価実施日</th>
-			<td>{{{ $product->newpricestartdate }}}</td>
+			<td>{{{ $product->product_newpricestartdate }}}</td>
 		</tr>
 		<tr>
 			<th>新標準売上単価</th>
-			<td>{{{ $product->newunitprice }}}</td>
+			<td>{{{ $product->product_newunitprice }}}</td>
 		</tr>
 		<tr>
 			<th>新仕入評価単価</th>
-			<td>{{{ $product->newcostprice }}}</td>
+			<td>{{{ $product->product_newcostprice }}}</td>
 		</tr>
 		<tr>
 			<th>新在庫評価単価</th>
-			<td>{{{ $product->newstockprice }}}</td>
+			<td>{{{ $product->product_newstockprice }}}</td>
 		</tr>
 		<tr>
 			<th>新上代単価</th>
-			<td>{{{ $product->newretailprice }}}</td>
+			<td>{{{ $product->product_newretailprice }}}</td>
 		</tr>
 		<tr>
 			<th>カテゴリー</th>
@@ -122,7 +124,7 @@
 		</tr>
 		<tr>
 			<th>マスター検索表示</th>
-			<td>{{{ $product->product_showmastersearch　}}}</td>
+			<td>{{{ $product->product_showmastersearch }}}</td>
 		</tr>
 		<tr>
 			<th>EANコード(JAN)</th>

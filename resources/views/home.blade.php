@@ -22,11 +22,11 @@
     --}}
     <div class="col-md-12">
     	<div class="panel panel-default">
-    		<div class="panel-heading"><h1>登録状況</h1><p>最新の30件を表示</p></div>
+    		<div class="panel-heading"><h1>登録状況</h1></div>
     		<div class="panel-body">
                 <div class="col-md-3">
-                    <h2>最新のブランド一覧</h2>
-                    <p>最近登録されたブランドの一覧を30件表示しています。</p>
+                    <h2>ブランド一覧</h2>
+                    <p>最近登録されたブランド一覧(30件)</p>
                     <table class="table">
                         <thead>
                             <tr>
@@ -45,8 +45,43 @@
                     </table>
                 </div>
                 <div class="col-md-9">
-                    <h2>最新の商品一覧</h2>
-                    <p>最近登録された商品の一覧を30件表示しています。</p>
+                    <h2>商品一覧</h2>
+                    <p>最近登録された商品一覧(30件)</p>
+                    <table class="table">
+                      <thead>
+                          <tr>
+                              <th>商品コード</th>
+                              <th>商品名</th>
+                              <th>EAN/JAN</th>
+                              <th>ASIN</th>
+                              <th>基幹システムへの登録状況</th>
+                              <th>登録した人</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($products as $product)
+                          <tr>
+                            <td><a href="{{ url("masters/products/{$product->id}") }}">{{ $product->product_code }}</a></td>
+                            <td>{{ $product->product_name }}</td>
+                            <td>{{ $product->product_eancode }}</td>
+                            <td>{{ $product->product_asin }}</td>
+                            <td>{{ $product->product_smileregistration }}</td>
+                            <td>{{ $product->user->name }}</td>
+                          </tr>
+                        @endforeach
+                      </tbody>
+                    </table>
+                </div>
+    		</div>
+    	</div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h1>更新状況</h1></div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <h2>商品一覧</h2>
+                    <p>最近更新されたブランド一覧(10件)</p>
                     <table class="table">
                         <thead>
                             <tr>
@@ -54,14 +89,14 @@
                                 <th>商品名</th>
                                 <th>EAN/JAN</th>
                                 <th>ASIN</th>
-                                <th>基幹システムへの登録状況</th>
-                                <th>登録した人</th>
+                                <th>基幹システムへの更新状況</th>
+                                <th>更新した人</th>
                             </tr>
                         </thead>
-                        <tbod>
-                            @foreach($products as $product)
+                        <tbody>
+                            @foreach($updated_products as $product)
                             <tr>
-                                <td>{{ $product->product_code }}</td>
+                                <td><a href="{{ url("masters/products/{$product->id}") }}">{{ $product->product_code }}</a></td>
                                 <td>{{ $product->product_name }}</td>
                                 <td>{{ $product->product_eancode }}</td>
                                 <td>{{ $product->product_asin }}</td>
@@ -69,11 +104,11 @@
                                 <td>{{ $product->user->name }}</td>
                             </tr>
                             @endforeach
-                        </tbod>
+                        </tbody>
                     </table>
                 </div>
-    		</div>
-    	</div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

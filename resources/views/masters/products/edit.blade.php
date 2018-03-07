@@ -164,7 +164,7 @@
 			</div>
 			<div class="form-group col-md-3">
 				<label>新在庫評価単価</label>
-				<input class="form-control" name="product_newretailprice" type="text" maxlength="8" value="{{{ $product->product_newretailprice }}}" data-type="default" />円
+				<input class="form-control" name="product_newstockprice" type="text" maxlength="8" value="{{{ $product->product_newstockprice }}}" data-type="default" />円
 			</div>
 			<div class="form-group col-md-3">
 				<label>新上代単価</label>
