@@ -157,6 +157,18 @@
 					<form action="{{ url('masters/products/batchfile_download')}}" method="POST">
 						{{ csrf_field() }}
 						<div class="form-group">
+							<input type="hidden" name="registration_type" value="new_registration" class="btn btn-primary">
+						</div>
+						<div class="form-group">
+							<input type="submit" value="ダウンロード" class="btn btn-primary">
+						</div>
+					</form>
+					<form action="{{ url('masters/products/batchfile_download')}}" method="POST">
+						{{ csrf_field() }}
+						<div class="form-group">
+							<input type="hidden" name="registration_type" value="update_registration" class="btn btn-primary">
+						</div>
+						<div class="form-group">
 							<input type="submit" value="ダウンロード" class="btn btn-primary">
 						</div>
 					</form>
