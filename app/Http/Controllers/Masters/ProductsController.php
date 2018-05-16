@@ -44,14 +44,21 @@ class ProductsController extends Controller
         return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users]);
     }
 
-    public function search(Request $request){   //ajaxの場合は引数を$kewordにする
-        $keyword = $request->input('keyword');
-        $products = DB::table('products')->where('product_name', 'like', "%{$keyword}%")->orderBy('created_at','desc')->paginate(50);
+    public function search(){   //ajaxの場合は引数を$kewordにする
+        //たぶんgetでパラメーターが取得できてない？
+        //$keyword = $request->input('keyword');
+        $keyword = Input::get('keyword');
+        if(!empty($keyword)){
+            $products = DB::table('products')->where('product_name', 'like', '%'.$keyword.'%')->orderBy('created_at','desc')->paginate(50);
+        }else{
+            $products = Product::all();
+            $message = "検索クエリが空です";
+        }
         //header('Content-Type: application/json');
         //echo json_encode($products);
         $suppliers = Supplier::all();
         $users = User::all();
-        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ]);
+        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ])->flash('message_no_query', $message);
     }
 
     public function management()
@@ -556,7 +563,19 @@ class ProductsController extends Controller
     }
 
     public function batchfile_download(Request $request){
-        $products = Product::where('product_smileregistration', '=', '新規未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
+
+        $registration_type = $request['registration_type'];
+
+        if($registration_type == "new_registration"){
+
+            $products = Product::where('product_smileregistration', '=', '新規未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
+
+        }elseif($registration_type == "update_registration"){
+
+            $products = Product::where('product_smileregistration', '=', '更新未登録')->select('product_code', 'product_name', 'product_index', 'supplier_id', 'product_unitprice', 'product_costprice', 'product_stockprice', 'product_retailprice', 'product_newpricestartdate', 'product_newunitprice', 'product_newcostprice', 'product_newstockprice', 'product_newretailprice', 'category_id', 'product_typecode', 'product_stockholdingcode', 'product_rackcode', 'product_warehouseholdingcode', 'product_properstockquantity', 'product_boystockquantity', 'product_boybalance', 'product_showmastersearch', 'product_eancode')->get();
+        }
+
+
         //$productsをforeachで回してデータを修正
         $itemname = array(
             'product_code' => "商品ｺｰﾄﾞ",
