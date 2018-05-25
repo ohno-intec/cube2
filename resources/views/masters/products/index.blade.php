@@ -95,7 +95,7 @@
 			@endif
 		</div>
 	</div>
-	{{ $products->appends(Request::only('keyword'))->links() }}
+	{{ $products->appends($search_params)->links() }}
 	<table class="table table-straiped table-hover">
 		<thead>
 			<tr>

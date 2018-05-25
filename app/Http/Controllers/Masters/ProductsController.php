@@ -45,6 +45,12 @@ class ProductsController extends Controller
                                  'product_name' => $product_name <> '%' ? $product_name : '指定無し',
                                   'supplier_id' => $supplier_id <> '%' ? DB::table('suppliers')->where('id', $supplier_id)->first()->supplier_name : '指定無し');
 
+        $search_params = array(
+                                'brand_id' => $brand_id <> '%' ? $brand_id : '',
+                                'product_name' => $product_name <> '%' ? $product_name : '',
+                                'supplier_id' => $supplier_id <> '%' ? $supplier_id : ''
+                            );
+
         $products_sql = "空です";
         if(!empty($product_name) || !empty($brand_id) || !empty($supplier_id)){
             $products = DB::table('products')
@@ -58,11 +64,14 @@ class ProductsController extends Controller
         }
         $records_num = $products->total();
         $search_message = "レコード数:" . $records_num . "件";
-
         $suppliers = DB::table('suppliers')->orderBy('supplier_index', 'asc')->get();
         $users = User::all();
         $brands = DB::table('brands')->orderBy('brand_name', 'asc')->get();
-        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users, 'brands' => $brands])->with('search_message', $search_message)->with('products_sql', $products_sql)->with('search_conditions', $search_conditions);
+        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users, 'brands' => $brands])
+                ->with('search_message', $search_message)
+                ->with('products_sql', $products_sql)
+                ->with('search_conditions', $search_conditions)
+                ->with('search_params', $search_params);
     }
 
 
