@@ -5,17 +5,45 @@
 	<h2 class="page-header">商品マスタ一覧</h2>
 	<div class="row">
 		<div class="col-md-12">
-			<form action="{{ url('masters/products/search') }}" method="post" id="search">
-				{{ csrf_field() }}
+			商品を絞り込む（何も指定しない場合はその検索条件は無視されます）
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<form action="{{ url('masters/products/') }}" method="GET" id="search">
 				<div class="form-group">
-					<input type="text" name="keyword" placeholder="商品名で検索" class="form-control">
-				</div>
-				<div class="form-group">
-					<input type="submit" value="検索" class="btn btn-primary" id="searchbutton">
+					<div class="row">
+						<div class="col-md-3">
+							<label>ブランド(昇順)</label>
+							<select name="brand_id" class="form-control">
+									<option value="">選択してください</option>
+								@foreach($brands as $brand)
+									<option value="{{ $brand->id }}">{{ $brand->brand_name . "(brand_id:". $brand->id . "/brand_code:". $brand->brand_code .")" }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label>商品名(含む検索可)</label>
+							<input type="text" name="product_name" placeholder="商品名" class="form-control">
+						</div>
+						<div class="col-md-3">
+							<label>仕入先コード(索引の昇順)</label>
+							<select name="supplier_id" class="form-control">
+								<option value="">指定なし</option>
+								@foreach($suppliers as $supplier)
+								<option value="{{ $supplier->id }}">{{ $supplier->supplier_name . "(" . $supplier->supplier_code .")" }}</option>
+								@endforeach
+							</select>
+						</div>
+						{{ csrf_field() }}
+					</div>
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-md-3">
+							<input type="submit" value="検索" class="btn btn-primary" id="searchbutton">
+						</div>
+					</div>
 				</div>
 			</form>
-			<div class="search_results_message">
-			</div>
 			{{-- AJAXの場合これ
 			<script type="text/javascript">
 				$(function(){
@@ -50,7 +78,24 @@
 			</script>
 			--}}
 		</div>
+		<div class="search_results_message col-md-3">
+				{{ $search_message }}<br />
+		</div>
+		<div class="col-md-9">
+			<p>検索条件:
+			@foreach ($search_conditions as $key => $value)
+				{{ $key }} => {{ $value }}
+			@endforeach
+			</p>
+
+			@if(Session::has('message_no_query'))
+				{{ $message_no_query }}
+			@elseif(Session::has('search_message'))
+				{{ $search_message }}
+			@endif
+		</div>
 	</div>
+	{{ $products->appends(Request::only('keyword'))->links() }}
 	<table class="table table-straiped table-hover">
 		<thead>
 			<tr>
@@ -165,7 +210,7 @@
 			@endforeach
 		</tbody>
 	</table>
-	{{ $products->links() }}
+	{{ $products->appends(Request::only('keyword'))->links() }}
 			<script type="text/javascript">
 				(function(){
 

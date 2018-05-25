@@ -29,6 +29,7 @@ Route::get ('/masters/products/management', 'PagesController@productsManagement'
 
 
 //暗黙
+
 Route::resource('masters/brands', 'Masters\BrandsController');
 Route::post('masters/brands/batch', 'Masters\BrandsController@batch');
 
@@ -44,7 +45,7 @@ Route::get('/masters/get_product_code', function(){
 	return getProductCode($brand_id);
 })->middleware('auth');
 
-Route::post ('masters/products/search', 'Masters\ProductsController@search')->name('products.search');//ajaxの場合は第一引数の末尾に{keyword?}を付ける
+Route::get('/masters/products?{keyword}{_token}', 'Masters\ProductsController@search');//ajaxの場合は第一引数の末尾に{keyword?}を付ける
 //Route::get ('masters/products/management', 'Masters\ProductsController@management')->name('products.management');
 Route::post('masters/products/batch', 'Masters\ProductsController@batch');
 Route::post('masters/products/batch_update', 'Masters\ProductsController@batch_update');
@@ -52,6 +53,9 @@ Route::post('masters/products/batchfile_download', 'Masters\ProductsController@b
 Route::post('masters/products/smilecomplete', 'Masters\ProductsController@smilecomplete');
 Route::post('masters/products/smilecompleteall', 'Masters\ProductsController@smilecompleteall');
 Route::get('masters/auto_output', 'Masters\ProductsController@auto_output');
+
+
+#Route::post('masters/linebot/request', 'Masters\LinebotController@request');
 
 
 /*

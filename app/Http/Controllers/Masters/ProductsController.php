@@ -33,33 +33,38 @@ class ProductsController extends Controller
         $this->product = $product;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         //
         //$products = DB::table('products')->orderBy('created_at','desc')->paginate(20);
-        $products = DB::table('products')->orderBy('id','desc')->paginate(50);
-        $suppliers = Supplier::all();
+
+        $product_name = !empty($request->input('product_name')) ? $request->input('product_name') : '%';
+        $brand_id = !empty($request->input('brand_id')) ? $request->input('brand_id') : '%';
+        $supplier_id = !empty($request->input('supplier_id')) ? $request->input('supplier_id') : '%';
+        $search_conditions = array('brand_name' => $brand_id <> '%' ? DB::table('brands')->where('id', $brand_id)->first()->brand_name : '指定無し' ,
+                                 'product_name' => $product_name <> '%' ? $product_name : '指定無し',
+                                  'supplier_id' => $supplier_id <> '%' ? DB::table('suppliers')->where('id', $supplier_id)->first()->supplier_name : '指定無し');
+
+        $products_sql = "空です";
+        if(!empty($product_name) || !empty($brand_id) || !empty($supplier_id)){
+            $products = DB::table('products')
+                        ->where('brand_id', 'LIKE', '%'.$brand_id.'%')            
+                        ->where('product_name', 'LIKE', '%'.$product_name.'%')
+                        ->where('supplier_id', 'LIKE', '%'.$supplier_id.'%')
+                        ->orderBy('created_at','desc')
+                        ->paginate(50);
+        }else{
+            $products = DB::table('products')->orderBy('id','desc')->paginate(50);
+        }
+        $records_num = $products->total();
+        $search_message = "レコード数:" . $records_num . "件";
+
+        $suppliers = DB::table('suppliers')->orderBy('supplier_index', 'asc')->get();
         $users = User::all();
-        //$requested_user = DB::table('users')->where('id', $products->user_id)->value('name');
-        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users]);
+        $brands = DB::table('brands')->orderBy('brand_name', 'asc')->get();
+        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users, 'brands' => $brands])->with('search_message', $search_message)->with('products_sql', $products_sql)->with('search_conditions', $search_conditions);
     }
 
-    public function search(){   //ajaxの場合は引数を$kewordにする
-        //たぶんgetでパラメーターが取得できてない？
-        //$keyword = $request->input('keyword');
-        $keyword = Input::get('keyword');
-        if(!empty($keyword)){
-            $products = DB::table('products')->where('product_name', 'like', '%'.$keyword.'%')->orderBy('created_at','desc')->paginate(50);
-        }else{
-            $products = Product::all();
-            $message = "検索クエリが空です";
-        }
-        //header('Content-Type: application/json');
-        //echo json_encode($products);
-        $suppliers = Supplier::all();
-        $users = User::all();
-        return view('masters.products.index', ['products' => $products, 'suppliers' => $suppliers, 'users' => $users ])->flash('message_no_query', $message);
-    }
 
     public function management()
     {

@@ -38,18 +38,31 @@ function add_checked($inputName, $setting) {
 
 $( function() {
 	//select[brand_id]がチェンジされたらtext[product_name]のvalueを書き換え
-	$("select[name=brand_id]").change(function(){
-		if($("select[name=brand_id]").prop("selectedIndex") !== 0){
-			$brand_name = $("select[name=brand_id] option:selected").text();
-		}else{
-			$brand_name = "";
+	$("select[name=brand_id]").change(function(e){
+		$url = location.href;
+		$url = $url.split("/").filter(ev => Boolean(ev));
+		$url = $url[$url.length - 1];
+		$pos = $url.indexOf("?");
+		if(!($pos < 0)){
+			$url = $url.substr(0, $pos);
+			console.log($url);
 		}
-		$product_modelnumber = $("input[name=product_modelnumber]").val();
 
-		$product_name = $brand_name + " " + $product_modelnumber
-		$product_name = $product_name.substr(0,36);
+		if($url == "products"){
+			e.preventDefault();
+		}else{
+			if($("select[name=brand_id]").prop("selectedIndex") !== 0){
+				$brand_name = $("select[name=brand_id] option:selected").text();
+			}else{
+				$brand_name = "";
+			}
+			$product_modelnumber = $("input[name=product_modelnumber]").val();
 
-		$("input[name=product_name]").val($product_name);
+			$product_name = $brand_name + " " + $product_modelnumber
+			$product_name = $product_name.substr(0,36);
+
+			$("input[name=product_name]").val($product_name);
+		}
 	});
 
 	$("input[name=product_modelnumber]").keyup(function(){
