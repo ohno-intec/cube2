@@ -48,9 +48,9 @@ class ProductsController extends Controller
         $products_sql = "空です";
         if(!empty($product_name) || !empty($brand_id) || !empty($supplier_id)){
             $products = DB::table('products')
-                        ->where('brand_id', 'LIKE', '%'.$brand_id.'%')            
+                        ->where('brand_id', 'LIKE', $brand_id)            
                         ->where('product_name', 'LIKE', '%'.$product_name.'%')
-                        ->where('supplier_id', 'LIKE', '%'.$supplier_id.'%')
+                        ->where('supplier_id', 'LIKE', $supplier_id)
                         ->orderBy('created_at','desc')
                         ->paginate(50);
         }else{
