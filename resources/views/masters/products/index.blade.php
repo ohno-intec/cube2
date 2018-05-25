@@ -87,6 +87,9 @@
 				{{ $key }} => {{ $value }}
 			@endforeach
 			</p>
+			<p>
+				{{$products_sql}}
+			</p>
 
 			@if(Session::has('message_no_query'))
 				{{ $message_no_query }}

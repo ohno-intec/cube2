@@ -53,12 +53,38 @@ class ProductsController extends Controller
 
         $products_sql = "空です";
         if(!empty($product_name) || !empty($brand_id) || !empty($supplier_id)){
-            $products = DB::table('products')
-                        ->where('brand_id', 'LIKE', $brand_id)            
-                        ->where('product_name', 'LIKE', '%'.$product_name.'%')
-                        ->where('supplier_id', 'LIKE', $supplier_id)
-                        ->orderBy('created_at','desc')
-                        ->paginate(50);
+            if($supplier_id <> '%'){
+                $products = DB::table('products')
+                ->where('brand_id', $brand_id)            
+                ->where('product_name', 'LIKE', '%'.$product_name.'%')
+                ->where('supplier_id', $supplier_id)
+                ->orderBy('created_at','desc')
+                ->paginate(50);
+
+                $products_sql = DB::table('products')
+                ->where('brand_id', $brand_id)            
+                ->where('product_name', 'LIKE', '%'.$product_name.'%')
+                ->where('supplier_id', $supplier_id)
+                ->orderBy('created_at','desc')->toSql();
+
+            }else{
+                $products = DB::table('products')
+                ->where('brand_id', 'LIKE', $brand_id)            
+                ->where('product_name', 'LIKE', '%'.$product_name.'%')
+                ->where(function($query){
+                    $query->where('supplier_id', 'LIKE', '%')->orWhereNull('supplier_id');
+                })
+                ->orderBy('created_at','desc')
+                ->paginate(50);
+
+                $products_sql = DB::table('products')
+                ->where('brand_id', 'LIKE',$brand_id)            
+                ->where('product_name', 'LIKE', '%'.$product_name.'%')
+                ->where(function($query){
+                    $query->where('supplier_id', 'LIKE', '%')->orWhereNull('supplier_id');
+                })
+                ->orderBy('created_at','desc')->toSql();
+            }
         }else{
             $products = DB::table('products')->orderBy('id','desc')->paginate(50);
         }
