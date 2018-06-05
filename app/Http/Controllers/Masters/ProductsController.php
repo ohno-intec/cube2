@@ -38,26 +38,32 @@ class ProductsController extends Controller
         //
         //$products = DB::table('products')->orderBy('created_at','desc')->paginate(20);
 
+        $request->flash();
         $product_name = !empty($request->input('product_name')) ? $request->input('product_name') : '%';
         $brand_id = !empty($request->input('brand_id')) ? $request->input('brand_id') : '%';
         $supplier_id = !empty($request->input('supplier_id')) ? $request->input('supplier_id') : '%';
+        $product_smileregistration = !empty($request->input('product_smileregistration')) ? $request->input('product_smileregistration') : '%';
         $search_conditions = array('brand_name' => $brand_id <> '%' ? DB::table('brands')->where('id', $brand_id)->first()->brand_name : '指定無し' ,
                                  'product_name' => $product_name <> '%' ? $product_name : '指定無し',
-                                  'supplier_id' => $supplier_id <> '%' ? DB::table('suppliers')->where('id', $supplier_id)->first()->supplier_name : '指定無し');
+                                  'supplier_id' => $supplier_id <> '%' ? DB::table('suppliers')->where('id', $supplier_id)->first()->supplier_name : '指定無し',
+                                    'product_smileregistration' => $product_smileregistration <> '%' ? $product_smileregistration : '指定無し'
+                                );
 
         $search_params = array(
                                 'brand_id' => $brand_id <> '%' ? $brand_id : '',
                                 'product_name' => $product_name <> '%' ? $product_name : '',
-                                'supplier_id' => $supplier_id <> '%' ? $supplier_id : ''
+                                'supplier_id' => $supplier_id <> '%' ? $supplier_id : '',
+                                'product_smileregistration' => $product_smileregistration <> '%' ? $product_smileregistration : ''
                             );
 
         $products_sql = "空です";
-        if(!empty($product_name) || !empty($brand_id) || !empty($supplier_id)){
+        if(!empty($product_name) || !empty($brand_id) || !empty($supplier_id) || !empty($product_smileregistration)){
             if($supplier_id <> '%'){
                 $products = DB::table('products')
                 ->where('brand_id', $brand_id)            
                 ->where('product_name', 'LIKE', '%'.$product_name.'%')
                 ->where('supplier_id', $supplier_id)
+                ->where('product_smileregistration', $product_smileregistration)
                 ->orderBy('created_at','desc')
                 ->paginate(50);
 
@@ -65,6 +71,7 @@ class ProductsController extends Controller
                 ->where('brand_id', $brand_id)            
                 ->where('product_name', 'LIKE', '%'.$product_name.'%')
                 ->where('supplier_id', $supplier_id)
+                ->where('product_smileregistration', $product_smileregistration)
                 ->orderBy('created_at','desc')->toSql();
 
             }else{
@@ -74,6 +81,7 @@ class ProductsController extends Controller
                 ->where(function($query){
                     $query->where('supplier_id', 'LIKE', '%')->orWhereNull('supplier_id');
                 })
+                ->where('product_smileregistration', 'LIKE', $product_smileregistration)
                 ->orderBy('created_at','desc')
                 ->paginate(50);
 
@@ -83,6 +91,7 @@ class ProductsController extends Controller
                 ->where(function($query){
                     $query->where('supplier_id', 'LIKE', '%')->orWhereNull('supplier_id');
                 })
+                ->where('product_smileregistration', 'LIKE', $product_smileregistration)
                 ->orderBy('created_at','desc')->toSql();
             }
         }else{

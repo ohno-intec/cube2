@@ -18,21 +18,35 @@
 							<select name="brand_id" class="form-control">
 									<option value="">選択してください</option>
 								@foreach($brands as $brand)
-									<option value="{{ $brand->id }}">{{ $brand->brand_name . "(brand_id:". $brand->id . "/brand_code:". $brand->brand_code .")" }}</option>
+									<option value="{{ $brand->id }}" @if(old('brand_id')==$brand->id) selected @endif>{{ $brand->brand_name . "(brand_id:". $brand->id . "/brand_code:". $brand->brand_code .")" }}</option>
 								@endforeach
 							</select>
 						</div>
 						<div class="col-md-3">
 							<label>商品名(含む検索可)</label>
-							<input type="text" name="product_name" placeholder="商品名" class="form-control">
+							<input type="text" name="product_name" placeholder="商品名" class="form-control" value="{{ old('product_name') }}">
 						</div>
 						<div class="col-md-3">
 							<label>仕入先コード(索引の昇順)</label>
 							<select name="supplier_id" class="form-control">
 								<option value="">指定なし</option>
 								@foreach($suppliers as $supplier)
-								<option value="{{ $supplier->id }}">{{ $supplier->supplier_name . "(" . $supplier->supplier_code .")" }}</option>
+								<option value="{{ $supplier->id }}" @if(old('supplier_id')==$supplier->id) selected @endif>{{ $supplier->supplier_name . "(" . $supplier->supplier_code .")" }}</option>
 								@endforeach
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label>スマイル登録状況</label>
+							<select name="product_smileregistration" class="form-control">
+								<option value="">指定なし</option>
+								<option value="新規未登録" @if(old('product_smileregistration')=='新規未登録') selected @endif>新規未登録</option>
+								<option value="新規登録済" @if(old('product_smileregistration')=='新規登録済') selected @endif>新規登録済 </option>
+								<option value="新規要修正" @if(old('product_smileregistration')=='新規要修正') selected @endif>新規要修正</option>
+								<option value="新規拒否" @if(old('product_smileregistration')=='新規拒否') selected @endif>新規拒否</option>
+								<option value="更新未登録" @if(old('product_smileregistration')=='更新未登録') selected @endif>更新未登録</option>
+								<option value="更新登録済" @if(old('product_smileregistration')=='更新登録済') selected @endif>更新要修正</option>
+								<option value="更新要修正" @if(old('product_smileregistration')=='更新要修正') selected @endif>更新要修正</option>
+								<option value="更新拒否" @if(old('product_smileregistration')=='更新拒否') selected @endif>更新拒否</option>
 							</select>
 						</div>
 						{{ csrf_field() }}
