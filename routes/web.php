@@ -18,18 +18,13 @@
 
 Route::post('register/check_key', 'Auth\RegisterController@check_key');
 Auth::routes();
-
 //Route::get('/', 'PagesController@index')->name('home');
 Route::get('/', 'PagesController@index');
-
-
 Route::get ( '/master/', 'PagesController@master' );
-
+Route::resource('users', 'UsersController');
+Route::resource('accounts', 'AccountsController');
 Route::get ('/masters/products/management', 'PagesController@productsManagement')->name('products.management');
-
-
 //暗黙
-
 Route::resource('masters/brands', 'Masters\BrandsController');
 Route::post('masters/brands/batch', 'Masters\BrandsController@batch');
 

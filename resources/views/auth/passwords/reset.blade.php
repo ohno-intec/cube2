@@ -1,6 +1,5 @@
-@extends('layouts.app')
-
-@section('content')
+@extends('layout') {{-- layout.blade.phpを拡張 --}}
+@section('content') {{-- sectionを定義 --}}
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
