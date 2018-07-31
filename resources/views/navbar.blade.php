@@ -58,14 +58,16 @@
 						<li><a href="#">得意先・仕入先への案内文</a></li>
 						<li><a href="#">社内用申請書</a></li>
 					</ul>
-				</li>				
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">アフターサービス管理<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">修正受付</a></li>
-					</ul>
 				</li>
 				--}}
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown">アフター<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="{{url('after/charge')}}">修理基本料金</a></li>
+						{{--<li><a href="#">修正受付</a></li>--}}
+					</ul>
+				</li>
+
 			</ul>			
 
                     <!-- Right Side Of Navbar -->

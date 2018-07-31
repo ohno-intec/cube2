@@ -50,6 +50,10 @@ Route::post('masters/products/smilecompleteall', 'Masters\ProductsController@smi
 Route::get('masters/auto_output', 'Masters\ProductsController@auto_output');
 
 
+Route::get('after/charge', function (){
+	return view('after/charge/index');
+});
+
 #Route::post('masters/linebot/request', 'Masters\LinebotController@request');
 
 
