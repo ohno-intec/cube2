@@ -18,8 +18,9 @@ class UsersController extends Controller
         $user = \Auth::user();
         $accountSmile = DB::table('accounts')->where('user_id', '=', $user->id)->where('system', '=', 'SMILE BS')->get();
         $accountAlpha = DB::table('accounts')->where('user_id', '=', $user->id)->where('system', '=', 'ALPHA')->get();
+        $accountEmail = DB::table('accounts')->where('user_id', '=', $user->id)->where('system', '=', 'EMAIL')->get();
 
-        return view('users.index', ['user' => $user, 'accountSmile' => $accountSmile, 'accountAlpha' => $accountAlpha]);
+        return view('users.index', ['user' => $user, 'accountSmile' => $accountSmile, 'accountAlpha' => $accountAlpha, 'accountEmail' => $accountEmail]);
     }
 
     /**

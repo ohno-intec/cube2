@@ -13,9 +13,10 @@
 	                   		<dt>パスワード</dt><dd>{{-- <input type="password" value="{{ $user->password }}" disabled=""> --}}忘れた場合はリセットが必要です</dd>
 	                   	</dl>
                    	</div>
+                </div>
+    			<div class="row">
 				    <div class="col-md-12">
                     <h2>Smileアカウント</h2>
-
 	                    <dl class="dl-horizontal">
 	                    	@foreach( $accountSmile as $account)
 	                   		<dt>アカウント名</dt><dd>{{ $account->name }}</dd>
@@ -23,9 +24,10 @@
 	                   		@endforeach
 	                   	</dl>
                     </div>
+                </div>
+    			<div class="row">
 				    <div class="col-md-12">
                     <h2>Alphaアカウント</h2>
-
 	                    <dl class="dl-horizontal">
 	                    	@foreach( $accountAlpha as $account)
 	                   		<dt>アカウント名</dt><dd>{{ $account->name }}</dd>
@@ -33,6 +35,21 @@
 	                   		@endforeach
 	                   	</dl>
                    	</div>
+                </div>
+    			<div class="row">
+    				<div class="panel-heading col-md-12"><h2>Emailアカウント</h2></div>
+				    <div class="col-md-6">
+	                    <dl class="dl-horizontal">
+	                    	@foreach( $accountEmail as $account)
+	                   		<dt>アカウント名</dt><dd>{{ $account->name }}</dd>
+	                   		<dt>パスワード</dt><dd>{{ $account->password }}</dd>
+	                   		@endforeach
+	                   	</dl>
+                   	</div>
+				    <div class="col-md-6">
+				    <p>このEmailアカウントはXSERVERのWEBメール用アカウントです</p>
+				    <p><a href="https://www.xserver.ne.jp/login_mail.php" target="new">XSERVER WEBメールログイン</a></p>
+				    </div>
                 </div>
     		</div>
     	</div>

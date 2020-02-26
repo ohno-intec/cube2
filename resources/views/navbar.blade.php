@@ -45,13 +45,19 @@
 						<li><a href="#">貸出伝票</a></li>
 					</ul>
 				</li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">営業<span class="caret"></span></a>
+				--}}
+
+				<li class="dropdown"><a href="{{url('sales/')}}" class="dropdown-toggle" data-toggle="dropdown">営業ツール<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">日報</a></li>
 						<li><a href="#">売上</a></li>
+						<li><a href="#">企画書</a></li>
+						<li><a href="#">商品台帳</a></li>
+						<li><a href="{{url('seles/search')}}">ASIN検索</a></li>
 					</ul>
 				</li>
+
+				{{--
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown">社内リソース<span class="caret"></span></a>
 					<ul class="dropdown-menu">
@@ -85,7 +91,7 @@
                                 	<li>
                                 		<a href="{{ route('users.index')}}">アカウント情報の確認</a>
                                 	</li>
-                                	@if( Auth::user()->name == '管理者')
+                                	@if( Auth::user()->name == '管理者' or '大野拓哉')
                                 		<li><a href="{{ route('accounts.create') }}">アカウント情報の登録</a></li>
                                 	@endif
                                     <li>
