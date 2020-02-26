@@ -18,6 +18,7 @@
    				<select name="system" class="form-control">
    					<option value="SMILE BS">SMILE BS</option>
    					<option value="ALPHA">ALPHA</option>
+   					<option value="EMAIL">E-mail</option>
    				</select>
    			</div>
    			<div class="form-group">
