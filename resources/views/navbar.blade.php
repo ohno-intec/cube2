@@ -46,7 +46,7 @@
 					</ul>
 				</li>
 				--}}
-
+				{{--
 				<li class="dropdown"><a href="{{url('sales/')}}" class="dropdown-toggle" data-toggle="dropdown">営業ツール<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">日報</a></li>
@@ -56,7 +56,7 @@
 						<li><a href="{{url('seles/search')}}">ASIN検索</a></li>
 					</ul>
 				</li>
-
+				--}}
 				{{--
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown">社内リソース<span class="caret"></span></a>

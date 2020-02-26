@@ -43,13 +43,51 @@
 	                    	@foreach( $accountEmail as $account)
 	                   		<dt>アカウント名</dt><dd>{{ $account->name }}</dd>
 	                   		<dt>パスワード</dt><dd>{{ $account->password }}</dd>
-	                   		@endforeach
+	                   		@endforeach	                   		
+	                   		<dt></dt><dd></dd>
+	                   		<dt></dt><dd></dd>
+	                   		<dt></dt><dd></dd>
+	                   		<dt></dt><dd></dd>
 	                   	</dl>
                    	</div>
 				    <div class="col-md-6">
 				    <p>このEmailアカウントはXSERVERのWEBメール用アカウントです</p>
 				    <p><a href="https://www.xserver.ne.jp/login_mail.php" target="new">XSERVER WEBメールログイン</a></p>
 				    </div>
+                   	<div class="col-md-12">
+                      	<h3>共通Emailアカウント</h3>
+	                   	<table class="table table-striped">
+	                   		<thead>
+	                   			<tr>
+	                   				<th>アカウント名</th>
+	                   				<th>パスワード</th>
+	                   			</tr>
+	                   		</thead>
+	                   		<tbody>
+	                   			<tr>
+	                   				<td>e-mailorder@intec1998.co.jp</td>
+	                   				<td>s3n7iiwqnbtu</td>
+	                   			</tr>
+	                   			<tr>
+	                   				<td>info@intec1998.co.jp</td>
+	                   				<td>f77art7n3axa</td>
+	                   			</tr>
+	                   			<tr>
+	                   				<td>support-sw@soluswatch.jp</td>
+	                   				<td>r46bqe6fiea5</td>
+	                   			</tr>
+	                   			<tr>
+	                   				<td>support@grus.tokyo</td>
+	                   				<td>v7xwhs3gkz5c</td>
+	                   			</tr>
+	                   			<tr>
+	                   				<td>newbalance-watches@intec1998.co.jp</td>
+	                   				<td>newbalance</td>
+	                   			</tr>
+	                   		</tbody>
+	                   	</table>
+	                   	</div>
+
                 </div>
     		</div>
     	</div>
