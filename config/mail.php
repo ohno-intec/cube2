@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'host' => env ( 'MAIL_HOST', 'smtp.mailgun.org' ),
+    'host' => env ( 'MAIL_HOST', 'sv6088.xserver.jp' ),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'port' => env ( 'MAIL_PORT', 587 ),
+    'port' => env ( 'MAIL_PORT', 465 ),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,8 +55,8 @@ return [
     */
 
     'from' => [ 
-				'address' => env ( 'MAIL_FROM_ADDRESS', 'hello@example.com' ),
-				'name' => env ( 'MAIL_FROM_NAME', 'Example' ) 
+				'address' => env ( 'MAIL_FROM_ADDRESS', 'webmaster@intec1998.co.jp' ),
+				'name' => env ( 'MAIL_FROM_NAME', 'admin' ) 
 		],
 
     /*
@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'encryption' => env ( 'MAIL_ENCRYPTION', 'tls' ),
+    'encryption' => env ( 'MAIL_ENCRYPTION', 'ssl' ),
 
     /*
     |--------------------------------------------------------------------------
